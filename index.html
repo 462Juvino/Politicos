@@ -413,7 +413,7 @@
             </div>
     </div>
 
-    <button onclick="document.getElementById('hud-janela-painel').style.display='flex'" style="position: absolute; top: 15px; left: 15px; z-index: 1500; background: #3498db; color: white; border: 2px solid #fff; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); opacity: 0; transition: opacity 0.2s;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0">⚙️ PAINEL</button>
+    <button onclick="document.getElementById('hud-janela-painel').style.display='flex'" style="position: absolute; top: 15px; left: 15px; z-index: 1500; background: #3498db; color: white; border: 2px solid #fff; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); opacity: 0.5; transition: opacity 0.2s;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">⚙️ PAINEL</button>
 
     <div id="hud-janela-painel" style="position: absolute; top: 60px; left: 15px; width: calc(100vw - 30px); max-width: 450px; height: 85vh; background: rgba(13, 17, 23, 0.95); border: 2px solid #3498db; border-radius: 10px; z-index: 2000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
         <div style="background: #3498db; padding: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
@@ -623,10 +623,14 @@
             if (cfgStr && cfgStr !== ultimaConfigHUD) {
                 jogo.config = JSON.parse(cfgStr);
                 ultimaConfigHUD = cfgStr;
-                atualizarHUDPresentes(); // Agora só atualiza se você mudou os nomes no painel!
+                atualizarHUDPresentes();
             }
         }
-        atualizarConfig(); setInterval(atualizarConfig, 1000);
+
+        // Inicialização: carrega a config e FORÇA a primeira renderização dos presentes
+        atualizarConfig();
+        atualizarHUDPresentes();
+        setInterval(atualizarConfig, 1000);
 
 
 
