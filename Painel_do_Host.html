@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel BomBa BomBa</title>
+    <style>
+        body { background-color: #0d1117; color: white; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; padding: 20px; margin: 0; }
+        h2 { text-align: center; color: #ff4757; margin-top: 0; margin-bottom: 20px; }
+        fieldset { border: 1px solid #30363d; border-radius: 8px; padding: 15px; margin-bottom: 15px; background: #12151b; }
+        legend { font-weight: bold; color: #2ed573; padding: 0 5px; }
+        label { font-size: 0.85rem; color: #c9d1d9; font-weight: bold; }
+        input[type="text"], input[type="number"], select { width: 100%; padding: 8px; margin-top: 5px; margin-bottom: 10px; background: #161b22; border: 1px solid #30363d; color: white; border-radius: 5px; box-sizing: border-box; font-size: 0.9rem; }
+        input[type="range"] { width: 100%; margin-top: 5px; margin-bottom: 15px; }
+        .btn-save { width: 100%; padding: 12px; background: #3498db; color: white; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-bottom: 10px; transition: 0.2s; }
+        .btn-save:hover { background: #2980b9; }
+        .radio-group { display: flex; gap: 15px; margin-bottom: 10px; flex-wrap: wrap; }
+        .flex-row { display: flex; gap: 10px; align-items: center;}
+        .flex-col { flex: 1; }
+        .caixa-lista { margin-top: 10px; max-height: 150px; overflow-y: auto; background: #161b22; border: 1px solid #30363d; border-radius: 5px; padding: 5px; }
+        .player-item { display: flex; justify-content: space-between; align-items: center; padding: 5px; border-bottom: 1px solid #30363d; font-size: 0.85rem; }
+        .btn-remove { color: #ff4757; cursor: pointer; font-weight: bold; padding: 0 5px; border: 1px solid #ff4757; border-radius: 3px; }
+        .btn-add { color: #2ed573; cursor: pointer; font-weight: bold; padding: 0 5px; border: 1px solid #2ed573; border-radius: 3px; }
+        .btn-modo { flex: 1; padding: 10px; background: #222; color: #fff; border: 1px solid #555; border-radius: 5px; cursor: pointer; font-weight: bold; font-size: 0.8rem;}
+        .btn-modo.active { background: #f39c12; color: #000; border-color: #f39c12; }
+        details { background: #161b22; border: 1px solid #30363d; border-radius: 5px; margin-bottom: 10px; padding: 10px; }
+        summary { font-weight: bold; color: #f39c12; cursor: pointer; outline: none; list-style: none; }
+        summary::-webkit-details-marker { display: none; }
+        details p { font-size: 0.85rem; color: #ccc; line-height: 1.4; margin-top: 10px; margin-bottom: 0; }
+        ul.ajuda-lista { margin-top: 5px; margin-bottom: 0; padding-left: 20px; font-size: 0.85rem; color: #ccc; }
+        ul.ajuda-lista li { margin-bottom: 5px; }
+    </style>
+</head>
+<body>
+
+    <h2>💣 BomBa BomBa Web</h2>
+
+    <fieldset>
+        <legend>📺 Controlo do Ecrã & Rankings</legend>
+        <div class="flex-row" style="margin-bottom: 10px;">
+            <div class="flex-col" style="flex: 2;">
+                <label>Filtrar Rankings Por:</label>
+                <select id="ranking_periodo" onchange="mudarPeriodoRanking()">
+                    <option value="diario">Apenas Hoje (Diário)</option>
+                    <option value="semanal">Esta Semana</option>
+                    <option value="mensal">Este Mês</option>
+                    <option value="geral">Histórico Geral (Sempre)</option>
+                </select>
+            </div>
+            <div class="flex-col">
+                <label>Taps p/ Ataque 1:</label>
+                <input type="number" id="taps_ataque" value="200" title="Quantidade de likes para dar 1 de dano no adversário" onchange="salvarConfig(true)">
+            </div>
+        </div>
+
+        <div class="flex-row" style="flex-wrap: wrap; gap: 5px;">
+            <button class="btn-modo active" id="btn_game" onclick="mudarEcra('game')">⚔️ Arena do Jogo</button>
+            <button class="btn-modo" id="btn_rank_personagens" onclick="mudarEcra('rank_personagens')">📊 Placar L vs B</button>
+            <button class="btn-modo" id="btn_rank_vencedores" onclick="mudarEcra('rank_vencedores')">🏆 Top Jogadores</button>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>📖 Central de Ajuda</legend>
+        <details>
+            <summary>🕹️ Como Jogar (Regras p/ o Público)</summary>
+            <p><strong>Início da Luta:</strong> Ambos os lutadores começam com 1000 de Vida (HP).<br>
+            <strong>Ataques por Presentes:</strong> Cada presente enviado na live dispara o ataque correspondente (Ataques 1, 2, 3, 4 ou Máximo).<br>
+            <strong>Ataque por Taps (Likes):</strong> Ao atingir a meta de Taps (ex: 200 likes), um Ataque Básico (1 Dano) é desferido.<br>
+            <strong>Cura:</strong> Presentes de cura restauram +30 HP.<br>
+            <strong>Vitória:</strong> A luta só termina quando o HP de um dos lutadores chegar a 0!</p>
+        </details>
+        <details>
+            <summary>⚙️ Como Operar o Painel (Host)</summary>
+            <ul class="ajuda-lista">
+                <li>O seu <b>@</b> é lido automaticamente pelo link. Não precisa de configurar nada!</li>
+                <li><b>Configurar Presentes:</b> Defina quais presentes da TikTok acionam cada nível de ataque e cura para cada personagem.</li>
+                <li><b>Taps para Dano:</b> Defina a quantidade de likes necessários para disparar 1 de dano básico.</li>
+            </ul>
+        </details>
+    </fieldset>
+
+    <fieldset>
+        <legend>🔗 Link para OBS / TikTok Live Studio</legend>
+        <p style="font-size: 0.85rem; color: #ccc; margin-top: 0; margin-bottom: 5px;">Copie o link abaixo e cole no navegador do seu programa de live. Ele já contém a sua licença VIP!</p>
+        <div class="flex-row">
+            <input type="text" id="obs-link" readonly style="margin-bottom: 0; color: #f39c12; font-weight: bold; background: #222;">
+            <button onclick="copiarLinkOBS()" style="background: #3498db; color: white; border: none; padding: 10px; border-radius: 5px; cursor: pointer; font-weight: bold;">📋 COPIAR</button>
+        </div>
+    </fieldset>
+
+    <fieldset>
+        <legend>Visuais e Áudio</legend>
+        <div class="radio-group">
+            <label><input type="radio" name="bg_type" value="transparent" checked onchange="mudarFundoTipo()"> Transparente (Padrão)</label>
+            <label><input type="radio" name="bg_type" value="color" onchange="mudarFundoTipo()"> Cor Sólida</label>
+            <label><input type="radio" name="bg_type" value="image" onchange="mudarFundoTipo()"> Imagem</label>
+        </div>
+        <div id="div_bg_color" style="display: none;">
+            <input type="color" id="bg_color" value="#1a1a24" style="width: 100%; height: 40px; padding: 0; cursor: pointer;" onchange="enviarFundoCor()">
+        </div>
+        <div id="div_bg_image" style="display: none;">
+            <input type="file" id="bg_image" accept="image/*" onchange="enviarFundoImagem(event)">
+        </div>
+        <label style="display: block; margin-top: 10px;">Volume da Explosão: <span id="vol_val" style="color: #f39c12;">8%</span></label>
+        <input type="range" id="volume_explosao" min="0" max="100" value="8" onchange="salvarConfig(true)" oninput="document.getElementById('vol_val').innerText = this.value + '%'">
+
+        <label style="display: block; margin-top: 10px;">Zoom Remoto do Jogo: <span id="zoom_val" style="color: #f39c12;">100%</span></label>
+        <input type="range" id="zoom_jogo" min="40" max="200" value="100" onchange="salvarConfig(true)" oninput="document.getElementById('zoom_val').innerText = this.value + '%'">
+    </fieldset>
+
+
+
+    <fieldset>
+        <legend>🥊 Sistema de Golpes (Presentes)</legend>
+        <div style="display: flex; gap: 20px;">
+            <div style="flex: 1; border: 1px solid #ff4757; padding: 10px; border-radius: 5px; background: #1a1012;">
+                <h3 style="color: #ff4757; text-align: center; margin-top: 0;">🔴 Lado Esquerdo (L)</h3>
+                <label>Ataque 1 (1 Dano):</label><input type="text" id="pres_atk1_l" value="Rosa">
+                <label>Ataque 2 (10 Dano - Vídeo):</label><input type="text" id="pres_atk2_l" value="Colar da amizade">
+                <label>Ataque 3 (50 Dano - Vídeo):</label><input type="text" id="pres_atk3_l" value="Rosquinha">
+                <label>Ataque 4 (80 Dano - Vídeo):</label><input type="text" id="pres_atk4_l" value="Chapéu e Bigode">
+                <label>Máximo (300 Dano - Vídeo):</label><input type="text" id="pres_max_l" value="Balões">
+                <label>Cura (+30 HP):</label><input type="text" id="pres_cura_l" value="Muito Bem!">
+            </div>
+            <div style="flex: 1; border: 1px solid #2ed573; padding: 10px; border-radius: 5px; background: #101a12;">
+                <h3 style="color: #2ed573; text-align: center; margin-top: 0;">🟢 Lado Direito (B)</h3>
+                <label>Ataque 1 (1 Dano):</label><input type="text" id="pres_atk1_b" value="Bom jogo">
+                <label>Ataque 2 (10 Dano - Vídeo):</label><input type="text" id="pres_atk2_b" value="Coração">
+                <label>Ataque 3 (50 Dano - Vídeo):</label><input type="text" id="pres_atk3_b" value="Capybara">
+                <label>Ataque 4 (80 Dano - Vídeo):</label><input type="text" id="pres_atk4_b" value="Grou de papel">
+                <label>Máximo (300 Dano - Vídeo):</label><input type="text" id="pres_max_b" value="Medalha de ouro">
+                <label>Cura (+30 HP):</label><input type="text" id="pres_cura_b" value="Celebração para você">
+            </div>
+        </div>
+    </fieldset>
+
+    <button class="btn-save" onclick="salvarConfig(false)">Salvar Configurações</button>
+
+    <script>
+        let currentBgType = 'transparent';
+        let currentBgValue = 'transparent';
+        let lastCfgStr = "";
+
+        function verificarStatusRDM() {
+            let user = localStorage.getItem('rdm_user_tiktok') || localStorage.getItem('rdm_user');
+            let perfil = localStorage.getItem('rdm_perfil');
+            let msgEl = document.getElementById('licenseMsg');
+            let hwidEl = document.getElementById('hwid-display');
+
+            if (user && perfil) {
+                if(msgEl) { msgEl.innerText = `✅ Logado como: ${user} (${perfil.toUpperCase()})`; msgEl.style.color = "#2ecc71"; }
+                if(hwidEl) { hwidEl.style.display = 'none'; }
+            } else {
+                if(msgEl) { msgEl.innerText = "❌ Desconectado. Faça login no site RDM Studio."; msgEl.style.color = "#e74c3c"; }
+            }
+        }
+        verificarStatusRDM();
+        setInterval(verificarStatusRDM, 5000);
+
+        function atualizarLinkOBS() {
+            let user = localStorage.getItem('rdm_user_tiktok') || localStorage.getItem('rdm_user') || "visitante";
+            let baseURL = window.location.href.replace('Painel_do_Host.html', 'index.html').split('?')[0];
+            document.getElementById('obs-link').value = `${baseURL}?u=${user}&p=pro`;
+        }
+        atualizarLinkOBS();
+
+        function copiarLinkOBS() {
+            let input = document.getElementById('obs-link');
+            input.select(); document.execCommand("copy");
+            alert("✅ Link copiado! Pode colar no TikTok Live Studio ou OBS.");
+        }
+
+        function carregarConfigInputs(cfgStr) {
+            lastCfgStr = cfgStr; let cfg = JSON.parse(cfgStr);
+
+            // Lado L
+            document.getElementById('pres_atk1_l').value = cfg.pres_atk1_l || "Rosa";
+            document.getElementById('pres_atk2_l').value = cfg.pres_atk2_l || "Sorvete";
+            document.getElementById('pres_atk3_l').value = cfg.pres_atk3_l || "Peso";
+            document.getElementById('pres_atk4_l').value = cfg.pres_atk4_l || "Tiktok";
+            document.getElementById('pres_max_l').value = cfg.pres_max_l || "Coracao";
+            document.getElementById('pres_cura_l').value = cfg.pres_cura_l || "Panda";
+            // Lado B
+            document.getElementById('pres_atk1_b').value = cfg.pres_atk1_b || "Rosa";
+            document.getElementById('pres_atk2_b').value = cfg.pres_atk2_b || "Sorvete";
+            document.getElementById('pres_atk3_b').value = cfg.pres_atk3_b || "Peso";
+            document.getElementById('pres_atk4_b').value = cfg.pres_atk4_b || "Tiktok";
+            document.getElementById('pres_max_b').value = cfg.pres_max_b || "Coracao";
+            document.getElementById('pres_cura_b').value = cfg.pres_cura_b || "Panda";
+            document.getElementById('taps_ataque').value = cfg.taps_ataque || 200;
+
+
+
+            const vol = Math.round((cfg.volume_explosao || 0.08) * 100);
+            document.getElementById('volume_explosao').value = vol;
+            document.getElementById('vol_val').innerText = vol + '%';
+
+            const zoomPercent = Math.round((cfg.zoom_level || 1.0) * 100);
+            document.getElementById('zoom_jogo').value = zoomPercent;
+            document.getElementById('zoom_val').innerText = zoomPercent + '%';
+
+            currentBgType = cfg.bg_type || 'transparent'; currentBgValue = cfg.bg_value || 'transparent';
+            let radio = document.querySelector(`input[name="bg_type"][value="${currentBgType}"]`); if(radio) radio.checked = true;
+            atualizarVisibilidadeFundo();
+            if(currentBgType === 'color' && currentBgValue !== 'transparent') document.getElementById('bg_color').value = currentBgValue;
+        }
+
+        setInterval(() => {
+            let cfgStr = localStorage.getItem('bombaConfig');
+            if (cfgStr && cfgStr !== lastCfgStr) {
+                if (document.activeElement.tagName !== 'INPUT' && document.activeElement.tagName !== 'SELECT') carregarConfigInputs(cfgStr);
+            }
+        }, 1000);
+
+        window.onload = () => { let initialCfg = localStorage.getItem('bombaConfig'); if (initialCfg) carregarConfigInputs(initialCfg); };
+
+        function atualizarVisibilidadeFundo() {
+            document.getElementById('div_bg_color').style.display = currentBgType === 'color' ? 'block' : 'none';
+            document.getElementById('div_bg_image').style.display = currentBgType === 'image' ? 'block' : 'none';
+        }
+
+        function mudarFundoTipo() {
+            currentBgType = document.querySelector('input[name="bg_type"]:checked').value;
+            if (currentBgType === 'transparent') currentBgValue = 'transparent';
+            else if (currentBgType === 'color') currentBgValue = document.getElementById('bg_color').value || '#1a1a24';
+            atualizarVisibilidadeFundo(); salvarConfig(true);
+        }
+
+        function enviarFundoCor() { currentBgValue = document.getElementById('bg_color').value; salvarConfig(true); }
+
+        function enviarFundoImagem(event) {
+            const file = event.target.files[0]; if(!file) return; const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = new Image();
+                img.onload = function() {
+                    const canvas = document.createElement('canvas');
+                    let width = img.width; let height = img.height;
+                    if (width > 1280) { height *= 1280 / width; width = 1280; }
+                    canvas.width = width; canvas.height = height;
+                    const ctx = canvas.getContext('2d'); ctx.drawImage(img, 0, 0, width, height);
+                    currentBgValue = canvas.toDataURL('image/jpeg', 0.6); salvarConfig(true);
+                };
+                img.src = e.target.result;
+            };
+            reader.readAsDataURL(file);
+        }
+
+        function enviarComando(action, value = null) { localStorage.setItem('bombaCommand', JSON.stringify({ ts: Date.now(), action: action, value: value })); }
+        function mudarEcra(modo) { document.querySelectorAll('.btn-modo').forEach(btn => btn.classList.remove('active')); document.getElementById('btn_' + modo).classList.add('active'); enviarComando('display_mode', modo); }
+        function mudarPeriodoRanking() { enviarComando('display_periodo', document.getElementById('ranking_periodo').value); localStorage.setItem('bombaDisplayPeriodo', document.getElementById('ranking_periodo').value); }
+        function limparRankingDia() { if(confirm("TEM CERTEZA que deseja apagar todos os pontos de HOJE?")) enviarComando('limpar_diario'); }
+
+
+
+        function salvarConfig(silencioso = false) {
+            const config = {
+                taps_ataque: parseInt(document.getElementById('taps_ataque').value) || 200,
+                volume_explosao: (parseInt(document.getElementById('volume_explosao').value) || 8) / 100.0,
+                zoom_level: (parseInt(document.getElementById('zoom_jogo').value) || 100) / 100.0,
+                bg_type: currentBgType, bg_value: currentBgValue,
+
+                pres_atk1_l: document.getElementById('pres_atk1_l').value,
+                pres_atk2_l: document.getElementById('pres_atk2_l').value,
+                pres_atk3_l: document.getElementById('pres_atk3_l').value,
+                pres_atk4_l: document.getElementById('pres_atk4_l').value,
+                pres_max_l: document.getElementById('pres_max_l').value,
+                pres_cura_l: document.getElementById('pres_cura_l').value,
+
+                pres_atk1_b: document.getElementById('pres_atk1_b').value,
+                pres_atk2_b: document.getElementById('pres_atk2_b').value,
+                pres_atk3_b: document.getElementById('pres_atk3_b').value,
+                pres_atk4_b: document.getElementById('pres_atk4_b').value,
+                pres_max_b: document.getElementById('pres_max_b').value,
+                pres_cura_b: document.getElementById('pres_cura_b').value
+            };
+            let cfgStr = JSON.stringify(config); localStorage.setItem('bombaConfig', cfgStr); lastCfgStr = cfgStr;
+            enviarComando('update_bg');
+            if (!silencioso) alert("Configurações salvas com sucesso!");
+        }
+
+
+    </script>
+
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-database.js";
+
+        const firebaseConfig = { apiKey: "AIzaSyB2LNWktWEwYLuZxwr8oc9NpcjFz3GU5qc", authDomain: "authrdm-a82a6.firebaseapp.com", databaseURL: "https://authrdm-a82a6-default-rtdb.firebaseio.com", projectId: "authrdm-a82a6" };
+        const app = initializeApp(firebaseConfig); const db = getDatabase(app);
+
+        // Intercepta e atira para a nuvem (Dentro da pasta do usuário)
+        const originalSalvar = window.salvarConfig;
+        window.salvarConfig = function(silencioso = false) {
+            originalSalvar(silencioso);
+            const rdmUser = localStorage.getItem('rdm_user_tiktok') || localStorage.getItem('rdm_user') || "visitante";
+            let configStr = localStorage.getItem('bombaConfig');
+            if(configStr) set(ref(db, `usuarios/${rdmUser}/controle_remoto/bomba_config`), JSON.parse(configStr));
+        };
+
+        const originalEnviar = window.enviarComando;
+        window.enviarComando = function(action, value = null) {
+            originalEnviar(action, value);
+            const rdmUser = localStorage.getItem('rdm_user_tiktok') || localStorage.getItem('rdm_user') || "visitante";
+            set(ref(db, `usuarios/${rdmUser}/controle_remoto/bomba_comando`), { ts: Date.now(), action: action, value: value });
+
+            // Se a ordem for zerar o dia, força o reset do nó de rankings no Firebase também!
+            if (action === 'limpar_diario') {
+                let rStr = localStorage.getItem('bombaRankings');
+                if (rStr) set(ref(db, `usuarios/${rdmUser}/controle_remoto/bomba_rankings`), JSON.parse(rStr));
+            }
+        };
+    </script>
+</body>
+</html>
