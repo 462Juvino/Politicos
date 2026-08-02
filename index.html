@@ -156,26 +156,28 @@
             transition: all 0.2s ease-out;
         }
 
-        /* Container de Presentes e Funções abaixo das fotos */
+                /* Container de Presentes e Funções abaixo das fotos */
         .lista-presentes-hud {
             width: 100%;
-            margin-top: 12px;
+            margin-top: 15px;
             display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 6px;
+            grid-template-columns: repeat(2, 1fr); /* DUAS COLUNAS PARA CABER NO CELULAR */
+            gap: 8px;
         }
 
         .card-presente-hud {
             background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: 5px 8px;
+            padding: 10px 8px; /* ESTICADO NA VERTICAL (10px cima/baixo) */
             display: flex;
             align-items: center;
             gap: 8px;
             backdrop-filter: blur(4px);
+            /* Ciclo de 14s com 10s cravados de visibilidade total */
             animation: antiStaticFade 14s infinite ease-in-out;
         }
+        
 
         @keyframes antiStaticFade {
             0% { opacity: 0; transform: translateY(10px); pointer-events: none; }
