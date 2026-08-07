@@ -290,8 +290,10 @@
         }
 
         .lutador-avatar-wrap {
-            width: 380px; /* FOTO MAIOR */
-            height: 380px; /* FOTO MAIOR */
+            width: 100%;
+            max-width: 380px; /* Tamanho máximo */
+            aspect-ratio: 1 / 1; /* MÁGICA: Força a foto a ser sempre um quadrado perfeito! */
+            height: auto; /* Acompanha a largura dinamicamente */
             border-radius: 20px;
             overflow: hidden;
             border: 6px solid #fff;
