@@ -301,18 +301,18 @@
 
         /* Container de Presentes e Funções abaixo das fotos */
         .lista-presentes-hud {
-            width: 100%;
             margin-top: 15px;
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* DUAS COLUNAS PARA CABER NO CELULAR */
-            gap: 8px;
+            grid-template-columns: max-content max-content; /* Colunas moldadas pelo maior nome */
+            justify-content: center; /* Centraliza a grade inteira debaixo do lutador */
+            gap: 12px; /* Distanciamento claro entre as caixas */
         }
 
         .card-presente-hud {
             background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.2);
             border-radius: 8px;
-            padding: 10px 8px; /* ESTICADO NA VERTICAL (10px cima/baixo) */
+            padding: 10px 15px; /* Mais espaço interno para as laterais não ficarem espremidas */
             display: flex;
             align-items: center;
             gap: 8px;
@@ -434,61 +434,42 @@
             text-shadow: 0 0 5px black, 0 0 10px black;
         }
 
-        .lutador-avatar-wrap {
-            width: 280px;
-            height: 280px;
-            border-radius: 20px;
-            overflow: hidden;
-            border: 5px solid #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
-            background: #111;
-            transition: transform 0.1s;
+        /* =========================================
+           📱 MODO TIKTOK (AUTOMÁTICO PARA CELULAR)
+           Se a janela for mais alta que larga, empilha!
+           ========================================= */
+        @media (max-aspect-ratio: 1/1) {
+            .arena-luta {
+                flex-direction: column; /* Lule em cima, Bozo embaixo */
+                align-items: center;
+                top: 50%; /* Centraliza na tela inteira */
+                transform: translate(-50%, -50%);
+                gap: 20px;
+                width: 98vw;
+                height: 98vh; /* Usa toda a altura */
+                overflow-y: auto; /* Permite rolar se a tela for muito pequena */
+            }
+
+            .lutador-box {
+                width: 95%; /* Ocupa quase a largura toda do celular */
+            }
+
+            .centro-arena {
+                margin-top: 10px;
+                flex-direction: row; /* Coloca o VS e os Tops lado a lado no meio */
+                justify-content: center;
+                gap: 15px;
+            }
+
+            .center-top-panels {
+                margin-top: 0;
+                flex-direction: row; /* Tops Moeda e Tops Taps ficam lado a lado */
+            }
+
+            .avatar-with-ranks {
+                flex-wrap: wrap; /* Permite que os rankings laterais caiam se faltar espaço */
+            }
         }
-
-        .lutador-l .lutador-avatar-wrap { border-color: #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.6); }
-        .lutador-b .lutador-avatar-wrap { border-color: #2ed573; box-shadow: 0 0 25px rgba(46, 213, 115, 0.6); }
-
-        .lutador-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .vs-divider {
-            font-size: 4rem;
-            font-weight: 900;
-            color: #f39c12;
-            text-shadow: 0 0 20px #f39c12, 0 0 10px black;
-        }
-
-        /* Animação de tremor ao levar golpe */
-        .shake-hit {
-            animation: shakeAnim 0.3s cubic-bezier(.36,.07,.19,.97) both;
-        }
-
-        @keyframes shakeAnim {
-            10%, 90% { transform: translate3d(-4px, 0, 0) scale(1.05); }
-            20%, 80% { transform: translate3d(6px, 0, 0) scale(1.05); }
-            30%, 50%, 70% { transform: translate3d(-8px, 0, 0) scale(1.05); }
-            40%, 60% { transform: translate3d(8px, 0, 0) scale(1.05); }
-        }
-
-        .lutador-nome {
-            font-size: 2.8rem; /* NOME GIGANTE */
-            font-weight: 900;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 0 15px black, 0 0 8px black;
-            text-align: center !important; /* Centraliza perfeitamente acima da barra */
-            width: 100%;
-            background: rgba(0, 0, 0, 0.6); /* Fundo translúcido para dar destaque */
-            border-radius: 12px;
-            padding: 5px 0;
-            border: 2px solid rgba(255, 255, 255, 0.2); /* Borda sutil */
-        }
-
-        .lutador-l .lutador-nome { color: #ff4757; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); }
-        .lutador-b .lutador-nome { color: #2ed573; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.3); }
 
     </style>
 </head>
@@ -709,20 +690,85 @@
             else imgB.src = 'imagens/bozo_dano_grave.png';
         }
 
+        // 📚 CATÁLOGO BASE DE PRESENTES (Carregado do JSON)
+        const catalogoBase = {
+            "rosa": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/eba3a9bb85c33e017f3648eaf88d7189~tplv-obj.png",
+            "heartme": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/fans_starter_upgraded_gift.png~tplv-obj.png",
+            "maosfazendocoracao": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/a4c4dc437fd3a6632aba149769491f49.png~tplv-obj.png",
+            "creeper": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/d686d45bd66e16b0aca8b0e5eb52a977.png~tplv-obj.png",
+            "fiquepopular": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/b342e28d73dac6547e0b3e2ad57f6597.png~tplv-obj.png",
+            "amovoce": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/fc549cf1bc61f9c8a1c97ebab68dced7.png~tplv-obj.png",
+            "rosabranca": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/a2d81f3847457be9083a9c76a59b08cb~tplv-obj.png",
+            "casquinhadesorvete": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/968820bc85e274713c795a6aef3f7c67~tplv-obj.png",
+            "tiktok": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/802a21ae29f9fae5abe3693de9f874bd~tplv-obj.png",
+            "bomjogo": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/3f02fa9594bd1495ff4e8aa5ae265eef~tplv-obj.png",
+            "pop": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/0b4f61e8ab637f11449300d03929ef87.png~tplv-obj.png",
+            "rosquinha": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/4e7ad6bdf0a1d860c538f38026d4e812~tplv-obj.png",
+            "incrivel": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/e9cafce8279220ed26016a71076d6a8a.png~tplv-obj.png",
+            "coracao": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/98bea1b189fba75bf0ca766b4dc1976e~tplv-obj.png",
+            "lagrimasdoguard": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/saliency_seg_1768272743461_0.55d0898ebdd4cb6375d4065ab7586aae.png~tplv-obj.png",
+            "superpopular": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/2fa794a99919386b85402d9a0a991b2b.png~tplv-obj.png",
+            "torcidadeequipe": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/6a934c90e5533a4145bed7eae66d71bd.png~tplv-obj.png",
+            "cisne": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/97a26919dbf6afe262c97e22a83f4bf1~tplv-obj.png",
+            "nocomlaco": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/dd02c4c2cb726134314e89abec0b5476.png~tplv-obj.png",
+            "fogosdeartificio": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/9494c8a0bc5c03521ef65368e59cc2b8~tplv-obj.png",
+            "coracoes": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/934b5a10dee8376df5870a61d2ea5cb6.png~tplv-obj.png",
+            "galaxia": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/79a02148079526539f7599150da9fd28.png~tplv-obj.png",
+            "exposicaodeflores": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/b6266323ef3ea0d313cbab6911ff8c46~tplv-obj.png",
+            "encontrofuturo": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/af980f4ec9ed73f3229df8dfb583abe6.png~tplv-obj.png",
+            "rosaparasempre": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/863e7947bc793f694acbe970d70440a1.png~tplv-obj.png",
+            "corgi": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/148eef0884fdb12058d1c6897d1e02b9~tplv-obj.png",
+            "chapeuebigode": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/2f1e4f3f5c728ffbfa35705b480fdc92~tplv-obj.png",
+            "batatadepascoa": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/3d458d6e242c431cb8fe6a50f68f874a.png~tplv-obj.png",
+            "maocomcoracao": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/6cd022271dc4669d182cad856384870f~tplv-obj.png",
+            "piscadinha": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/4a68411b3e92fc2bf68d458d5f906b74.png~tplv-obj.png",
+            "bastaobrilhante": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/8e1a5d66370c5586545e358e37c10d25~tplv-obj.png",
+            "buquedeflores": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/b158b8493b51a3f30c59710c39d1dc96~tplv-obj.png",
+            "estilolivre": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/1f5ca5cfb4b98c2761fb85987f47c641.png~tplv-obj.png",
+            "poderdaequipe": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/fb8da877eabca4ae295483f7cdfe7d31.png~tplv-obj.png",
+            "colardaamizade": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/e033c3f28632e233bebac1668ff66a2f.png~tplv-obj.png",
+            "minidino": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/3851a489dea62b3a9fe99f61de5470ae~tplv-obj.png",
+            "fogosdeartificioefeitoaranha": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/579f1709202892e0356e526fccfcc3c0.png~tplv-obj.png",
+            "motocicleta": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/motor_icon_green.png~tplv-obj.png",
+            "tomdapradaria": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/32154aa9a0fab3d772475044c03e5dc7.png~tplv-obj.png",
+            "armadediamante": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/651e705c26b704d03bc9c06d841808f1.png~tplv-obj.png",
+            "figurapopular": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/resource/df7b556ccf369bf9a42fe83ec8a77acf.png~tplv-obj.png",
+            "bomanoitecer": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/0015a756ff783f37a2cf3b5d634b3cd6~tplv-obj.png",
+            "oculosdeestrela": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/e14483e67a44ce522ba583ec923941fa.png~tplv-obj.png",
+            "legal": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/3f3482002d65c1ac990d31b0b3b23927.png~tplv-obj.png",
+            "luvasdeboxe": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/9f8bd92363c400c284179f6719b6ba9c~tplv-obj.png",
+            "coracaodesaudacao": "https://p19-webcast.tiktokcdn.com/img/alisg/webcast-sg/resource/9325524bd9ca181bd8e76eb99b44c042.png~tplv-obj.png",
+            "pistoladedinheiro": "https://p19-webcast.tiktokcdn.com/img/maliva/webcast-va/e0589e95a2b41970f0f30f6202f5fce6~tplv-obj.png"
+        };
+
         function getIconePresenteGuardado(nomePresente) {
-            let icones = JSON.parse(localStorage.getItem('bombaGiftIcons') || '{}');
             let key = nomePresente.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+
+            // 1º: Tenta puxar do Catálogo Base super rápido
+            if (catalogoBase[key]) return catalogoBase[key];
+
+            // 2º: Tenta puxar da memória (Firebase Sincronizado)
+            let icones = JSON.parse(localStorage.getItem('bombaGiftIcons') || '{}');
             return icones[key] || '';
         }
 
         function salvarIconePresente(nomePresente, urlImagem) {
             if (!urlImagem || !nomePresente) return;
-            let icones = JSON.parse(localStorage.getItem('bombaGiftIcons') || '{}');
             let key = nomePresente.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+
+            // Se já tem no catálogo base, não salva nada!
+            if (catalogoBase[key]) return;
+
+            let icones = JSON.parse(localStorage.getItem('bombaGiftIcons') || '{}');
             if (!icones[key]) {
                 icones[key] = urlImagem;
                 localStorage.setItem('bombaGiftIcons', JSON.stringify(icones));
-                atualizarHUDPresentes(); // Atualiza a tela para exibir a nova imagem capturada!
+                atualizarHUDPresentes();
+
+                // Dispara o salvamento pro Firebase Global para que outros conheçam a imagem!
+                if (typeof window.fbcPushIconeGlobal === "function") {
+                    window.fbcPushIconeGlobal(key, urlImagem);
+                }
             }
         }
 
@@ -1198,6 +1244,9 @@
                 }
 
                 if (atacouL) {
+                    jogadoresAoVivo[nick].time = "lule"; // NOVO: Entra pro time Lule automaticamente
+                    atualizarTopsNaTela(); // NOVO: Atualiza a tela imediatamente para exibir no top lateral
+
                     estadoLuta.ajudante_lule = { nick: nick, avatar: avatar_url };
                     let danoTotalL = danoBaseL * comboCount;
 
@@ -1227,6 +1276,9 @@
                 }
 
                 if (atacouB) {
+                    jogadoresAoVivo[nick].time = "bozo"; // NOVO: Entra pro time Bozo automaticamente
+                    atualizarTopsNaTela(); // NOVO: Atualiza a tela imediatamente para exibir no top lateral
+
                     estadoLuta.ajudante_bozo = { nick: nick, avatar: avatar_url };
                     let danoTotalB = danoBaseB * comboCount;
 
@@ -1549,6 +1601,32 @@
             if(snapshot.exists()) {
                 localStorage.setItem('bombaRankings', JSON.stringify(snapshot.val()));
                 if (typeof window.atualizarTela === "function") window.atualizarTela();
+            }
+        });
+
+        // 🌟 SISTEMA GLOBAL DE ÍCONES DE PRESENTES (DISPONÍVEL PARA TODOS)
+        window.fbcPushIconeGlobal = function(key, urlImagem) {
+            set(ref(db, `global/bomba_icones_presentes/${key}`), urlImagem);
+        };
+
+        // Ouve as atualizações do catálogo global para alimentar o localStorage de todo o mundo
+        onValue(ref(db, `global/bomba_icones_presentes`), (snapshot) => {
+            if(snapshot.exists()) {
+                let novosIcones = snapshot.val();
+                let iconesLocais = JSON.parse(localStorage.getItem('bombaGiftIcons') || '{}');
+                let atualizou = false;
+
+                for (let k in novosIcones) {
+                    if (!iconesLocais[k]) {
+                        iconesLocais[k] = novosIcones[k];
+                        atualizou = true;
+                    }
+                }
+
+                if (atualizou) {
+                    localStorage.setItem('bombaGiftIcons', JSON.stringify(iconesLocais));
+                    if (typeof window.atualizarHUDPresentes === "function") window.atualizarHUDPresentes();
+                }
             }
         });
     </script>
