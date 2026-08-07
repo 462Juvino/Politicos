@@ -287,8 +287,7 @@
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            width: 15%;
-            align-self: stretch; /* Acompanha a altura dos lutadores */
+            width: 16%; /* Um pouquinho mais largo para caber bem os tops */
             position: relative;
         }
 
@@ -297,7 +296,7 @@
             font-weight: 900;
             color: #f39c12;
             text-shadow: 0 0 20px #f39c12, 0 0 10px black;
-            margin-top: 10px;
+            margin-top: 1vh;
         }
 
         .center-top-panels {
@@ -305,8 +304,9 @@
             flex-direction: column;
             gap: 12px;
             width: 100%;
-            position: absolute;
-            bottom: 0; /* Alinha perfeitamente com a altura dos presentes */
+            /* NOVO: Empurra para baixo exatamente a altura da barra + foto,
+               alinhando com a primeira caixa de presente! */
+            margin-top: clamp(150px, 24vh, 280px);
         }
 
         .center-panel {
@@ -397,7 +397,7 @@
             .lutador-box { width: 95%; margin: 0 auto; }
             .centro-arena { width: 95%; flex-direction: row; margin-top: 0; justify-content: space-around; align-self: center; }
             .vs-divider { margin-top: 0; font-size: 3rem; }
-            .center-top-panels { position: relative; flex-direction: row; width: auto; gap: 10px; bottom: auto; }
+            .center-top-panels { position: relative; flex-direction: row; width: auto; gap: 10px; margin-top: 0; }
             #top-lule-left, #top-bozo-left { right: 78%; }
             #top-lule-right, #top-bozo-right { left: 78%; }
         }
