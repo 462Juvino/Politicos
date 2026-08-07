@@ -320,8 +320,8 @@
             /* Ciclo de 14s com 10s cravados de visibilidade total */
             animation: antiStaticFade 14s infinite ease-in-out;
         }
-        
-        
+
+
 
         @keyframes antiStaticFade {
             0% { opacity: 0; transform: translateY(10px); pointer-events: none; }
@@ -493,6 +493,8 @@
     </style>
 </head>
 <body>
+
+    <div id="game-background" style="position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background-image: url('imagens/palacio_do_planalto.png'); background-size: cover; background-position: center; opacity: 0.7; z-index: -1; transition: all 0.5s ease;"></div>
 
     <div id="overlay-countdown">5</div>
 
@@ -747,7 +749,10 @@
 
             function gerarHTML(lista) {
                 return lista.map(item => {
-                    let imgUrl = getIconePresenteGuardado(item.nome);
+                    // Limpa o nome antes de procurar o ícone para evitar que espaços quebrem a imagem!
+                    let nomeLimpoParaIcone = item.nome.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+                    let imgUrl = getIconePresenteGuardado(nomeLimpoParaIcone);
+
                     let imgTag = imgUrl ? `<img class="img-presente-hud" src="${imgUrl}">` : `<div class="img-presente-hud" style="display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:#888;">🎁</div>`;
                     return `
                         <div class="card-presente-hud">
@@ -1156,8 +1161,20 @@
                 let comboCount = parseInt(dados.repeatCount || dados.comboCount || dados.giftCount || dados.repeat_count || 1);
                 if (isNaN(comboCount) || comboCount < 1) comboCount = 1;
 
-                // Computa as moedas para os Tops da tela
-                let coins = parseInt(dados.diamondCount || dados.coinCount || dados.diamonds || 0);
+                // 1. Busca agressiva: Tenta pegar o valor real em moedas (diamantes) de qualquer formato que a API mandar
+                let coins = parseInt(dados.diamondCount || dados.coinCount || dados.diamonds || dados.cost || dados.giftCost || dados.price || (dados.gift && dados.gift.diamond_count) || 0);
+
+                // 2. PLANO B (Fallback): Se a API não mandar o valor, o jogo adivinha pelo nome!
+                if (coins === 0) {
+                    if (pres.includes("rosa") || pres.includes("fiquepopular") || pres.includes("bomjogo")) coins = 1;
+                    else if (pres.includes("colardaamizade") || pres.includes("coracao")) coins = 10;
+                    else if (pres.includes("rosquinha") || pres.includes("capybara") || pres.includes("peso") || pres.includes("muitobem") || pres.includes("celebracaoparavoce")) coins = 30; // Rosquinha e Curas valem 30
+                    else if (pres.includes("chapeuebigode") || pres.includes("groudepapel") || pres.includes("tiktok")) coins = 80;
+                    else if (pres.includes("baloes") || pres.includes("medalhadeouro") || pres.includes("coracao")) coins = 300;
+                    else coins = 1; // Valor padrão para presentes não cadastrados
+                }
+
+                // Matemática final: (Valor do presente) x (Quantidade de presentes no Combo)
                 jogadoresAoVivo[nick].moedas += (coins * comboCount);
                 atualizarTopsNaTela();
 
@@ -1312,12 +1329,22 @@
         function atualizarTela() {
             if (jogo.config.volume_explosao !== undefined) audioExplosaoMp3.volume = jogo.config.volume_explosao;
 
-            if (jogo.config.bg_type === 'transparent') {
-                document.body.style.backgroundImage = 'none'; document.body.style.backgroundColor = 'transparent';
-            } else if (jogo.config.bg_type === 'color') {
-                document.body.style.backgroundImage = 'none'; document.body.style.backgroundColor = jogo.config.bg_value;
-            } else if (jogo.config.bg_type === 'image') {
-                document.body.style.backgroundColor = 'transparent'; document.body.style.backgroundImage = `url('${jogo.config.bg_value}')`;
+            let bgDiv = document.getElementById('game-background');
+            if (bgDiv) {
+                if (jogo.config.bg_type === 'transparent') {
+                    // Padrão: Palácio do Planalto com 70% de visibilidade
+                    bgDiv.style.backgroundImage = "url('imagens/palacio_do_planalto.png')";
+                    bgDiv.style.backgroundColor = 'transparent';
+                    bgDiv.style.opacity = '0.7';
+                } else if (jogo.config.bg_type === 'color') {
+                    bgDiv.style.backgroundImage = 'none';
+                    bgDiv.style.backgroundColor = jogo.config.bg_value;
+                    bgDiv.style.opacity = '1';
+                } else if (jogo.config.bg_type === 'image') {
+                    bgDiv.style.backgroundImage = `url('${jogo.config.bg_value}')`;
+                    bgDiv.style.backgroundColor = 'transparent';
+                    bgDiv.style.opacity = '0.7';
+                }
             }
 
             if (jogo.config.zoom_level !== undefined) {
