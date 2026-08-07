@@ -445,7 +445,7 @@
 
     <div id="game-zoom-area">
         <div id="video-overlay" style="display:none; position:absolute; top:0; left:0; width:100vw; height:100vh; z-index:500; background:black;">
-            <video id="video-player" style="width:100%; height:100%; object-fit:contain;"></video>
+            <video id="video-player" playsinline preload="auto" style="width:100%; height:100%; object-fit:contain;"></video>
         </div>
 
         <div class="arena-luta">
@@ -756,15 +756,35 @@
             const overlay = document.getElementById('video-overlay');
             const player = document.getElementById('video-player');
 
-            player.src = caminhoVideo;
-            overlay.style.display = 'block';
-            player.play().catch(e => console.log("Erro video: ", e));
+            // Limpa as instruções antigas para não dar conflito
+            player.onended = null;
+            player.onerror = null;
 
-            player.onended = () => {
+            player.src = caminhoVideo;
+            player.load(); // Força o pré-carregamento imediato
+            overlay.style.display = 'block';
+
+            // Função centralizada para fechar a tela preta e seguir o jogo
+            const finalizarVideo = () => {
                 overlay.style.display = 'none';
                 estadoLuta.emVideo = false;
                 aplicarDano(alvo, dano);
             };
+
+            // Se a internet falhar ou o arquivo estiver corrompido, pula o vídeo e dá o dano!
+            player.onerror = () => {
+                console.log("Erro ao carregar o vídeo. Pulando animação...");
+                finalizarVideo();
+            };
+
+            // Tenta dar o play
+            player.play().catch(e => {
+                console.log("Navegador bloqueou o vídeo ou travou: ", e);
+                finalizarVideo(); // Destrava o jogo imediatamente
+            });
+
+            // Se tocar normal, finaliza quando acabar
+            player.onended = finalizarVideo;
         }
 
         function aplicarDano(alvo, valor) {
