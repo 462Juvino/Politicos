@@ -843,19 +843,18 @@
         }
 
         function aplicarDano(alvo, valor) {
+            if (estadoLuta.lutaEncerrada) return; // TRAVA DE SEGURANÇA: Se já morreu, não apanha mais!
+
             const wrap = document.getElementById(alvo === 'lule' ? 'wrap-lule' : 'wrap-bozo');
 
-            // Escolhe a animação com base no dano
             let animClass = 'shake-hit';
             if (valor >= 300) animClass = 'crack-hit';
             else if (valor >= 50) animClass = 'heavy-hit';
             else if (valor >= 10) animClass = 'blink-hit';
 
             wrap.classList.add(animClass);
-            // Remove a classe após 900ms para garantir que a animação mais longa terminou
             setTimeout(() => wrap.classList.remove(animClass), 900);
 
-            // Se você tiver um som para o soco básico, ele toca aqui.
             try { somHit.currentTime = 0; somHit.play(); } catch(e){}
 
             if (alvo === 'lule') {
@@ -869,6 +868,7 @@
         }
 
         function aplicarCura(quem, valor) {
+            if (estadoLuta.lutaEncerrada) return; // Não cura morto
             if (quem === 'lule') estadoLuta.hp_lule += valor;
             else estadoLuta.hp_bozo += valor;
             mostrarAviso(`💚 +${valor} HP PARA ${quem.toUpperCase()}!`);
@@ -877,6 +877,7 @@
 
         function mostrarAviso(texto) {
             const popup = document.getElementById('aviso-popup');
+            if(!popup) return;
             popup.innerText = texto;
             popup.style.opacity = 1;
             popup.style.transform = "translate(-50%, -50%) scale(1.1)";
@@ -1005,52 +1006,56 @@
         }
 
         function verificarFimDeLuta() {
+            if (estadoLuta.lutaEncerrada) return; // Impede que a tela seja chamada duas vezes
+
             if (estadoLuta.hp_lule <= 0 || estadoLuta.hp_bozo <= 0) {
+                estadoLuta.lutaEncerrada = true; // ATIVA A TRAVA DE FIM DE LUTA
+
                 let ladoVencedor = estadoLuta.hp_lule > 0 ? 'lule' : 'bozo';
-                let ladoPerdedor = estadoLuta.hp_lule > 0 ? 'bozo' : 'lule';
                 let ajudante = ladoVencedor === 'lule' ? estadoLuta.ajudante_lule : estadoLuta.ajudante_bozo;
 
-                let nomeVenc = ladoVencedor === 'lule' ? 'LULE' : 'BOZO';
-                let imgVenc = `imagens/${ladoVencedor}_base.png`;
-                let imgPerd = `imagens/${ladoPerdedor}_dano_grave.png`; // A imagem destruída do perdedor
-
-                // Atualiza o ranking com o lado vitorioso e o jogador que finalizou
-                addRanking(ladoVencedor, ajudante.nick, ajudante.avatar);
+                try { addRanking(ladoVencedor, ajudante.nick, ajudante.avatar); } catch(e) {}
 
                 exibirVencedor({
-                    nick: ajudante.nick,
-                    nome_vencedor: nomeVenc,
-                    img_vencedor: imgVenc,
-                    img_perdedor: imgPerd
+                    nick: `GOLPE FINAL: ${ajudante.nick}`,
+                    avatar: ajudante.avatar,
+                    tempo: 0,
+                    palavras: []
                 });
 
-                // Reinicia a luta após 5 MINUTOS (300.000 milissegundos)
+                // Reinicia a luta após 8 segundos cravados
                 setTimeout(() => {
                     estadoLuta.hp_lule = 1000;
                     estadoLuta.hp_bozo = 1000;
+                    estadoLuta.lutaEncerrada = false; // DESTRAVA PARA A NOVA LUTA
                     atualizarHUDLuta();
-                }, 5000);
+                }, 8000);
             }
         }
 
         function exibirVencedor(dados) {
-            playVictory();
-            document.getElementById('ranking-view').style.display = 'none';
-            document.getElementById('game-zoom-area').style.display = 'block';
+            try { playVictory(); } catch(e) {}
 
-            // Alimenta a nova tela cara-a-cara
-            document.getElementById('nome-ganhador-titulo').innerText = dados.nome_vencedor;
-            document.getElementById('vencedor-nick').innerText = dados.nick;
-            document.getElementById('img-vencedor-final').src = dados.img_vencedor;
-            document.getElementById('img-perdedor-final').src = dados.img_perdedor;
+            let rankView = document.getElementById('ranking-view');
+            let gameZoom = document.getElementById('game-zoom-area');
+            if(rankView) rankView.style.display = 'none';
+            if(gameZoom) gameZoom.style.display = 'block';
+
+            let avatar = document.getElementById('vencedor-avatar');
+            let nick = document.getElementById('vencedor-nick');
+            if(avatar) avatar.src = dados.avatar;
+            if(nick) nick.innerText = dados.nick;
+
+            let statusCaixa = document.querySelector('.vencedor-stats');
+            if (statusCaixa) statusCaixa.style.display = 'none'; // Evita erro se a caixa não existir!
 
             const tela = document.getElementById('tela-vencedor');
-            tela.classList.add('show');
-
-            // Remove a tela da frente após 5 MINUTOS (300.000 milissegundos)
-            setTimeout(() => {
-                tela.classList.remove('show');
-            }, 5000);
+            if(tela) {
+                tela.classList.add('show');
+                setTimeout(() => {
+                    tela.classList.remove('show');
+                }, 8000);
+            }
         }
 
         function renderizarRankingUI(modo, dataDict, periodoTexto) {
