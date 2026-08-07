@@ -89,169 +89,19 @@
         .side-b { background: rgba(46, 213, 115, 0.2); border: 1px solid #2ed573; color: #2ed573; }
         .rank-score { font-size: 1.8rem; font-weight: 900; color: #f39c12; }
 
-        /* --- ESTILOS DOS RANKINGS AO VIVO --- */
-        .avatar-with-ranks {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            width: 100%;
-        }
-
-        .side-top-panel {
-            display: flex;
-            flex-direction: column;
-            gap: 6px; /* Espaço maior entre os jogadores */
-            width: 155px; /* LARGURA BEM MAIOR */
-            flex-shrink: 0;
-        }
-
-        .top-item-side {
-            display: flex;
-            align-items: center;
-            background: rgba(0, 0, 0, 0.85);
-            border-radius: 12px;
-            padding: 5px 8px; /* Caixa mais gordinha */
-            border: 1px solid rgba(255, 255, 255, 0.2);
-        }
-
-        .side-lule .top-item-side { border-color: #ff4757; box-shadow: 0 0 5px rgba(255, 71, 87, 0.4); }
-        .side-bozo .top-item-side { border-color: #2ed573; box-shadow: 0 0 5px rgba(46, 213, 115, 0.4); }
-
-        .pos-num {
-            font-size: 0.85rem; /* NUMERAÇÃO MAIOR */
-            font-weight: 900;
-            color: #f39c12;
-            margin-right: 5px;
-            min-width: 20px;
-        }
-
-        .top-item-side img {
-            width: 36px; /* FOTO BEM MAIOR */
-            height: 36px;
-            border-radius: 50%;
-            margin-right: 8px;
-            border: 1px solid #fff;
-            object-fit: cover;
-        }
-
-        .top-item-side .info {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .top-item-side .name {
-            font-weight: bold;
-            font-size: 0.85rem; /* NOME MAIOR */
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            color: #fff;
-        }
-
-        .top-item-side .score {
-            color: #f39c12;
-            font-weight: 900;
-            font-size: 0.75rem; /* PONTUAÇÃO MAIOR */
-        }
-
-        /* Centro da Arena (VS + Top Moedas e Top Taps) */
-        .centro-arena {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: flex-start;
-            margin-top: 85px; /* Mantém o VS colado no topo */
-        }
-
-        .center-top-panels {
-            display: flex;
-            flex-direction: column;
-            gap: 15px; /* Espaço maior entre Top Moeda e Top Taps */
-            margin-top: 330px; /* EMPURRA PARA BAIXO ENTRE OS PRESENTES! */
-        }
-
-        .center-panel {
-            background: rgba(0, 0, 0, 0.85);
-            border: 2px solid #f39c12;
-            border-radius: 12px;
-            padding: 10px 12px; /* Caixa mais gordinha */
-            min-width: 170px; /* BEM MAIS LARGO */
-            box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
-        }
-
-        .center-panel-title {
-            font-size: 0.95rem; /* TÍTULO MAIOR */
-            color: #f39c12;
-            font-weight: 900;
-            text-align: center;
-            margin-bottom: 8px;
-            text-transform: uppercase;
-            text-shadow: 0 0 5px black;
-        }
-
-        .top-item-center {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 5px;
-            font-size: 0.9rem; /* FONTE MAIOR */
-            background: rgba(255, 255, 255, 0.1);
-            padding: 5px 8px;
-            border-radius: 8px;
-        }
-
-        .top-item-center img {
-            width: 26px; /* FOTO MAIOR */
-            height: 26px;
-            border-radius: 50%;
-            border: 1px solid #fff;
-            object-fit: cover;
-        }
-
-        .top-item-center .name {
-            font-weight: bold;
-            width: 60px; /* LARGURA MAIOR PARA O NOME */
-            white-space: nowrap;
-            overflow: hidden;
-            text-transform: uppercase;
-            color: #fff;
-        }
-
-        .top-item-center .val {
-            font-weight: 900;
-            color: #2ed573;
-            flex-grow: 1;
-            text-align: right;
-            font-size: 0.95rem; /* NÚMERO DE MOEDAS/TAPS MAIOR */
-        }
-
-        /* Estilos do Placar L vs B */
-        .placar-confronto { display: flex; gap: 40px; justify-content: center; align-items: center; width: 100%; padding: 20px 0; }
-        .card-lutador { flex: 1; max-width: 350px; background: rgba(15, 20, 30, 0.9); border-radius: 20px; padding: 20px; display: flex; flex-direction: column; align-items: center; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .card-lutador.card-l { border: 3px solid #ff4757; }
-        .card-lutador.card-b { border: 3px solid #2ed573; }
-        .card-lutador img { width: 130px; height: 130px; border-radius: 50%; object-fit: cover; margin-bottom: 15px; }
-        .card-lutador.card-l img { border: 4px solid #ff4757; box-shadow: 0 0 20px rgba(255, 71, 87, 0.5); }
-        .card-lutador.card-b img { border: 4px solid #2ed573; box-shadow: 0 0 20px rgba(46, 213, 115, 0.5); }
-        .card-lutador h3 { margin: 0 0 10px 0; font-size: 2rem; text-transform: uppercase; }
-        .card-lutador .placar-vitorias { font-size: 3.5rem; font-weight: 900; }
-        .card-lutador.card-l .placar-vitorias { color: #ff4757; }
-        .card-lutador.card-b .placar-vitorias { color: #2ed573; }
-        .vs-text { font-size: 3rem; font-weight: 900; color: #f39c12; text-shadow: 0 0 15px #f39c12; }
-
-        /* Arena de Luta Posicionada Mais Acima */
+        /* ===================================================
+           🎨 ARENA E RANKINGS (100% RESPONSIVOS E PROPORCIONAIS)
+           =================================================== */
         .arena-luta {
             position: absolute;
-            top: 15%; /* SUBIU PARA FICAR BEM PERTO DO TOPO */
+            top: 50%;
             left: 50%;
-            transform: translate(-50%, -15%);
-            width: 95vw;
-            max-width: 1300px;
+            transform: translate(-50%, -50%); /* Centraliza perfeitamente em qualquer tela */
+            width: 96vw;
+            max-width: 1400px;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
             z-index: 10;
         }
 
@@ -259,173 +109,44 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            width: 44%;
+            width: 42%; /* Mantém o espaço para o meio da tela */
         }
 
         .hud-top {
             width: 100%;
-            margin-bottom: 10px;
+            margin-bottom: 1.5vh;
         }
+
+        .lutador-nome {
+            font-size: clamp(1.5rem, 2.5vw, 2.5rem); /* Aumenta e diminui sozinho */
+            font-weight: 900;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px black;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.6);
+            border-radius: 12px;
+            padding: 5px 0;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        .lutador-l .lutador-nome { color: #ff4757; box-shadow: 0 5px 15px rgba(255, 71, 87, 0.3); }
+        .lutador-b .lutador-nome { color: #2ed573; box-shadow: 0 5px 15px rgba(46, 213, 115, 0.3); }
 
         .hp-bar-container {
             width: 100%;
-            height: 52px; /* BARRA MAIS MAJESTOSA */
+            height: clamp(30px, 4vh, 45px); /* Ajusta altura automaticamente */
             background: rgba(0, 0, 0, 0.85);
-            border: 4px solid #fff;
-            border-radius: 28px;
+            border: 3px solid #fff;
+            border-radius: 30px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 0 25px rgba(0,0,0,0.9);
+            box-shadow: 0 0 20px rgba(0,0,0,0.8);
         }
-
-        .hp-texto {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: 900;
-            font-size: 1.8rem; /* TEXTO DE VIDA MAIOR */
-            color: #fff;
-            text-shadow: 0 0 8px black, 0 0 15px black;
-        }
-
-        .lutador-avatar-wrap {
-            width: 100%;
-            max-width: 380px; /* Tamanho máximo */
-            aspect-ratio: 1 / 1; /* MÁGICA: Força a foto a ser sempre um quadrado perfeito! */
-            height: auto; /* Acompanha a largura dinamicamente */
-            border-radius: 20px;
-            overflow: hidden;
-            border: 6px solid #fff;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.9);
-            background: #111;
-            transition: all 0.2s ease-out;
-        }
-
-        /* Container de Presentes e Funções abaixo das fotos */
-        .lista-presentes-hud {
-            margin-top: 15px;
-            display: flex;
-            flex-direction: column; /* UMA ÚNICA COLUNA EMPILHADA */
-            align-items: stretch; /* Estica as caixas para ficarem com largura igual */
-            width: 100%;
-            max-width: 320px; /* Largura máxima para não ficar gigante demais na tela PC */
-            margin-left: auto;
-            margin-right: auto;
-            gap: 12px;
-        }
-
-        .card-presente-hud {
-            background: rgba(0, 0, 0, 0.75);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 12px; /* Bordas mais arredondadas */
-            padding: 12px 20px; /* Caixas mais gordinhas e espaçosas */
-            display: flex;
-            align-items: center;
-            gap: 15px; /* Distância maior entre a foto do presente e o texto */
-            backdrop-filter: blur(4px);
-            animation: antiStaticFade 14s infinite ease-in-out;
-        }
-
-
-
-        @keyframes antiStaticFade {
-            0% { opacity: 0; transform: translateY(10px); pointer-events: none; }
-            5% { opacity: 1; transform: translateY(0); pointer-events: auto; } /* Aparece */
-            80% { opacity: 1; transform: translateY(0); pointer-events: auto; } /* 10 SEGUNDOS TOTALMENTE VISÍVEL */
-            95% { opacity: 0; transform: translateY(-10px); pointer-events: none; } /* Desaparece suavemente */
-            100% { opacity: 0; transform: translateY(-10px); pointer-events: none; }
-        }
-        .img-presente-hud {
-            width: 48px; /* ÍCONE QUASE O DOBRO DO TAMANHO */
-            height: 48px;
-            object-fit: contain;
-            border-radius: 6px;
-            background: rgba(255,255,255,0.1);
-            flex-shrink: 0;
-        }
-
-        .info-presente-hud {
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-        }
-
-        .nome-presente-hud {
-            font-size: 1.15rem; /* TEXTO MUITO MAIOR */
-            font-weight: 900;
-            color: #fff;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .funcao-presente-hud {
-            font-size: 0.85rem; /* FUNÇÃO DO PRESENTE MUITO MAIOR */
-            font-weight: 900;
-            color: #f39c12;
-            text-transform: uppercase;
-        }
-
-        .lutador-l .lutador-avatar-wrap { border-color: #ff4757; box-shadow: 0 0 35px rgba(255, 71, 87, 0.8); }
-        .lutador-b .lutador-avatar-wrap { border-color: #2ed573; box-shadow: 0 0 35px rgba(46, 213, 115, 0.8); }
-
-        .lutador-img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .vs-divider {
-            font-size: 6rem; /* VS GIGANTE */
-            font-weight: 900;
-            color: #f39c12;
-            text-shadow: 0 0 25px #f39c12, 0 0 10px black;
-        }
-
-        /* ANIMAÇÕES DE IMPACTO (4 NÍVEIS) */
-
-        /* 1. Dano Leve: Só balança */
-        .shake-hit { animation: shakeAnim 0.3s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes shakeAnim {
-            10%, 90% { transform: translate3d(-4px, 0, 0) scale(1.05); }
-            20%, 80% { transform: translate3d(6px, 0, 0) scale(1.05); }
-            30%, 50%, 70% { transform: translate3d(-8px, 0, 0) scale(1.05); }
-            40%, 60% { transform: translate3d(8px, 0, 0) scale(1.05); }
-        }
-
-        /* 2. Dano Médio: Balança e pisca avermelhado/branco */
-        .blink-hit { animation: blinkAnim 0.4s ease-in-out both; }
-        @keyframes blinkAnim {
-            0%, 100% { filter: brightness(1); transform: scale(1); }
-            30%, 70% { filter: brightness(2) contrast(1.5) saturate(5); transform: scale(1.08) rotate(2deg); }
-        }
-
-        /* 3. Dano Grave: Porrada forte, borra e sacode brutalmente */
-        .heavy-hit { animation: heavyHitAnim 0.6s cubic-bezier(.36,.07,.19,.97) both; }
-        @keyframes heavyHitAnim {
-            0%, 100% { filter: blur(0); transform: translate(0,0) scale(1); }
-            20% { filter: blur(3px) brightness(1.5); transform: translate(-20px, 15px) scale(0.95) rotate(-5deg); }
-            40% { filter: blur(2px) brightness(1.2); transform: translate(20px, -15px) scale(1.1) rotate(5deg); }
-            60% { filter: blur(1px); transform: translate(-15px, -10px) scale(0.98) rotate(-2deg); }
-            80% { filter: blur(0px); transform: translate(15px, 10px) scale(1.05) rotate(2deg); }
-        }
-
-        /* 4. Dano Máximo: Quebra um pedaço da ponta (borda amassa) + Inversão de cores */
-        .crack-hit { animation: crackAnim 0.9s ease-in-out both; border-radius: 10% 50% 15% 60% !important; border-width: 1px 12px 2px 10px !important; }
-        @keyframes crackAnim {
-            0% { transform: scale(1); filter: invert(0); }
-            10%, 30%, 50%, 70%, 90% { transform: translate(-15px, 10px) scale(1.15) rotate(-6deg); filter: invert(0.8) hue-rotate(180deg); }
-            20%, 40%, 60%, 80% { transform: translate(15px, -10px) scale(1.15) rotate(6deg); filter: invert(1) hue-rotate(-90deg) brightness(2); }
-            100% { transform: scale(1); filter: invert(0); }
-        }
-
         .hp-bar-fill {
             height: 100%;
             width: 100%;
             transition: width 0.3s ease-in-out, background-color 0.3s;
         }
-
         .lutador-l .hp-bar-fill { background: linear-gradient(90deg, #ff4757, #ff6b81); }
         .lutador-b .hp-bar-fill { background: linear-gradient(90deg, #2ed573, #7bed9f); float: right; }
 
@@ -435,48 +156,244 @@
             left: 50%;
             transform: translate(-50%, -50%);
             font-weight: 900;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 1.5vw, 1.5rem);
             color: #fff;
-            text-shadow: 0 0 5px black, 0 0 10px black;
+            text-shadow: 0 0 8px black;
         }
 
-        /* =========================================
-           📱 MODO TIKTOK (AUTOMÁTICO PARA CELULAR)
-           Se a janela for mais alta que larga, empilha!
-           ========================================= */
+        .avatar-with-ranks {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            margin-bottom: 1.5vh;
+        }
+
+        .lutador-avatar-wrap {
+            width: 45%; /* Se ajusta ao tamanho da tela */
+            max-width: 320px;
+            min-width: 150px;
+            aspect-ratio: 1 / 1; /* MÁGICA: Garante que NUNCA vai esmagar a foto */
+            height: auto;
+            border-radius: 20px;
+            overflow: hidden;
+            border: 5px solid #fff;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.8);
+            background: #111;
+            flex-shrink: 0;
+            z-index: 5;
+        }
+        .lutador-l .lutador-avatar-wrap { border-color: #ff4757; box-shadow: 0 0 25px rgba(255, 71, 87, 0.6); }
+        .lutador-b .lutador-avatar-wrap { border-color: #2ed573; box-shadow: 0 0 25px rgba(46, 213, 115, 0.6); }
+
+        .lutador-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Rankings Flutuantes (Asas da foto) */
+        .side-top-panel {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            width: 28%;
+            max-width: 160px;
+            min-width: 100px;
+            z-index: 4;
+        }
+
+        /* Ancoramento Inteligente */
+        #top-lule-left, #top-bozo-left { right: 75%; }
+        #top-lule-right, #top-bozo-right { left: 75%; }
+
+        .top-item-side {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 4px 6px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        .side-lule .top-item-side { border-color: #ff4757; }
+        .side-bozo .top-item-side { border-color: #2ed573; }
+
+        .pos-num {
+            font-size: clamp(0.6rem, 0.8vw, 0.8rem);
+            font-weight: 900;
+            color: #f39c12;
+            margin-right: 4px;
+        }
+
+        .top-item-side img {
+            width: clamp(20px, 2.5vw, 32px);
+            height: clamp(20px, 2.5vw, 32px);
+            border-radius: 50%;
+            margin-right: 6px;
+            border: 1px solid #fff;
+            object-fit: cover;
+        }
+
+        .top-item-side .info { display: flex; flex-direction: column; overflow: hidden; }
+        .top-item-side .name { font-weight: bold; font-size: clamp(0.6rem, 0.8vw, 0.8rem); color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .top-item-side .score { color: #f39c12; font-weight: 900; font-size: clamp(0.55rem, 0.7vw, 0.75rem); }
+
+        /* Lista de Presentes 2 Colunas Responsivas */
+        .lista-presentes-hud {
+            width: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr; /* Sempre 2 colunas proporcionais */
+            gap: 8px;
+        }
+
+        .card-presente-hud {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            animation: antiStaticFade 14s infinite ease-in-out;
+        }
+
+        @keyframes antiStaticFade {
+            0% { opacity: 0; transform: translateY(10px); }
+            5%, 80% { opacity: 1; transform: translateY(0); }
+            95%, 100% { opacity: 0; transform: translateY(-10px); }
+        }
+
+        .img-presente-hud {
+            width: clamp(28px, 3vw, 40px);
+            height: clamp(28px, 3vw, 40px);
+            object-fit: contain;
+            flex-shrink: 0;
+        }
+
+        .info-presente-hud { display: flex; flex-direction: column; overflow: hidden; }
+        .nome-presente-hud { font-size: clamp(0.7rem, 1vw, 1rem); font-weight: 900; color: #fff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+        .funcao-presente-hud { font-size: clamp(0.6rem, 0.8vw, 0.8rem); font-weight: 900; color: #f39c12; text-transform: uppercase; }
+
+        /* MEIO DA ARENA (VS e Moedas) */
+        .centro-arena {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 14%;
+        }
+
+        .vs-divider {
+            font-size: clamp(3rem, 5vw, 5rem);
+            font-weight: 900;
+            color: #f39c12;
+            text-shadow: 0 0 20px #f39c12, 0 0 10px black;
+            margin-bottom: 2vh;
+        }
+
+        .center-top-panels {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5vh;
+            width: 100%;
+        }
+
+        .center-panel {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            padding: 8px;
+            width: 100%;
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
+        }
+
+        .center-panel-title {
+            font-size: clamp(0.7rem, 1vw, 0.9rem);
+            color: #f39c12;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+        }
+
+        .top-item-center {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            margin-bottom: 4px;
+            font-size: clamp(0.7rem, 1vw, 0.85rem);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 4px 6px;
+            border-radius: 6px;
+        }
+
+        .top-item-center img {
+            width: clamp(18px, 2vw, 24px);
+            height: clamp(18px, 2vw, 24px);
+            border-radius: 50%;
+            border: 1px solid #fff;
+            object-fit: cover;
+        }
+
+        .top-item-center .name {
+            font-weight: bold;
+            width: 50px;
+            white-space: nowrap;
+            overflow: hidden;
+            color: #fff;
+        }
+
+        .top-item-center .val {
+            font-weight: 900;
+            color: #2ed573;
+            flex-grow: 1;
+            text-align: right;
+        }
+
+        /* ANIMAÇÕES DE IMPACTO */
+        .shake-hit { animation: shakeAnim 0.3s both; }
+        @keyframes shakeAnim {
+            10%, 90% { transform: translate3d(-4px, 0, 0) scale(1.05); }
+            20%, 80% { transform: translate3d(6px, 0, 0) scale(1.05); }
+            30%, 50%, 70% { transform: translate3d(-8px, 0, 0) scale(1.05); }
+            40%, 60% { transform: translate3d(8px, 0, 0) scale(1.05); }
+        }
+        .blink-hit { animation: blinkAnim 0.4s both; }
+        @keyframes blinkAnim { 30%, 70% { filter: brightness(2) saturate(5); transform: scale(1.08) rotate(2deg); } }
+        .heavy-hit { animation: heavyHitAnim 0.6s both; }
+        @keyframes heavyHitAnim {
+            20% { filter: blur(3px) brightness(1.5); transform: translate(-20px, 15px) scale(0.95) rotate(-5deg); }
+            40% { filter: blur(2px); transform: translate(20px, -15px) scale(1.1) rotate(5deg); }
+        }
+        .crack-hit { animation: crackAnim 0.9s both; border-radius: 10% 50% 15% 60% !important; }
+        @keyframes crackAnim {
+            20%, 60% { transform: translate(15px, -10px) scale(1.15) rotate(6deg); filter: invert(1) hue-rotate(-90deg); }
+        }
+
+        /* MODO CELULAR (AUTOMÁTICO PARA O TIKTOK) */
         @media (max-aspect-ratio: 1/1) {
             .arena-luta {
-                flex-direction: column; /* Lule em cima, Bozo embaixo */
-                align-items: center;
-                top: 50%; /* Centraliza na tela inteira */
-                transform: translate(-50%, -50%);
-                gap: 20px;
-                width: 98vw;
-                height: 98vh; /* Usa toda a altura */
-                overflow-y: auto; /* Permite rolar se a tela for muito pequena */
-            }
-
-            .lutador-box {
-                width: 95%; /* Ocupa quase a largura toda do celular */
-            }
-
-            .centro-arena {
-                margin-top: 10px;
-                flex-direction: row; /* Coloca o VS e os Tops lado a lado no meio */
+                flex-direction: column;
                 justify-content: center;
-                gap: 15px;
+                gap: 20px;
+                height: 98vh;
+                position: relative;
+                top: 0; left: 0;
+                transform: none;
+                padding: 10px 0;
+                overflow-y: auto;
             }
-
-            .center-top-panels {
-                margin-top: 0;
-                flex-direction: row; /* Tops Moeda e Tops Taps ficam lado a lado */
-            }
-
-            .avatar-with-ranks {
-                flex-wrap: wrap; /* Permite que os rankings laterais caiam se faltar espaço */
-            }
+            .lutador-box { width: 95%; margin: 0 auto; }
+            .centro-arena { width: 95%; flex-direction: row; margin-top: 0; justify-content: space-around; }
+            .vs-divider { margin-bottom: 0; font-size: 3.5rem; }
+            .center-top-panels { flex-direction: row; width: auto; gap: 10px; }
+            #top-lule-left, #top-bozo-left { right: 80%; }
+            #top-lule-right, #top-bozo-right { left: 80%; }
         }
-
     </style>
 </head>
 <body>
