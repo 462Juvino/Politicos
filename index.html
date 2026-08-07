@@ -530,93 +530,66 @@
     </div>
 
     <div id="game-zoom-area">
-            <div id="video-overlay" style="display:none; position:absolute; top:0; left:0; width:100vw; height:100vh; z-index:500; background:black;">
-                <video id="video-player" style="width:100%; height:100%; object-fit:contain;"></video>
+        <div id="video-overlay" style="display:none; position:absolute; top:0; left:0; width:100vw; height:100vh; z-index:500; background:black;">
+            <video id="video-player" style="width:100%; height:100%; object-fit:contain;"></video>
+        </div>
+
+        <div class="arena-luta">
+            <div class="lutador-box lutador-l">
+                <div class="hud-top">
+                    <div class="lutador-nome">🔴 Lule</div>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar-fill" id="hp-lule-fill"></div>
+                        <div class="hp-texto" id="hp-lule-text">1000 / 1000</div>
+                    </div>
+                </div>
+
+                <div class="avatar-with-ranks">
+                    <div id="top-lule-left" class="side-top-panel side-lule"></div>
+                    <div class="lutador-avatar-wrap" id="wrap-lule">
+                        <img id="img-lule" src="imagens/lule_base.png" class="lutador-img">
+                    </div>
+                    <div id="top-lule-right" class="side-top-panel side-lule"></div>
+                </div>
+
+                <div class="lista-presentes-hud" id="hud-presentes-lule"></div>
             </div>
 
-
-
-            <div class="center-top-panels">
-                <div class="center-panel">
-                    <div class="center-panel-title">💰 TOP MOEDAS</div>
-                    <div id="top-moedas-center"></div>
-                </div>
-                <div class="center-panel">
-                    <div class="center-panel-title">❤️ TOP TAPS</div>
-                    <div id="top-taps-center"></div>
+            <div class="centro-arena">
+                <div class="vs-divider">VS</div>
+                <div class="center-top-panels">
+                    <div class="center-panel">
+                        <div class="center-panel-title">💰 TOP MOEDAS</div>
+                        <div id="top-moedas-center"></div>
+                    </div>
+                    <div class="center-panel">
+                        <div class="center-panel-title">❤️ TOP TAPS</div>
+                        <div id="top-taps-center"></div>
+                    </div>
                 </div>
             </div>
 
-            <div class="arena-luta">
-                <div class="lutador-box lutador-l">
-                    <div class="hud-top">
-                        <div class="lutador-nome">🔴 Lule</div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar-fill" id="hp-lule-fill"></div>
-                            <div class="hp-texto" id="hp-lule-text">1000 / 1000</div>
-                        </div>
-                    </div>
-
-                    <div style="position: relative; display: inline-block;">
-                        <div class="arena-luta">
-                <div class="lutador-box lutador-l">
-                    <div class="hud-top">
-                        <div class="lutador-nome">🔴 Lule</div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar-fill" id="hp-lule-fill"></div>
-                            <div class="hp-texto" id="hp-lule-text">1000 / 1000</div>
-                        </div>
-                    </div>
-
-                    <div class="avatar-with-ranks">
-                        <div id="top-lule-left" class="side-top-panel side-lule"></div>
-                        <div class="lutador-avatar-wrap" id="wrap-lule">
-                            <img id="img-lule" src="imagens/lule_base.png" class="lutador-img">
-                        </div>
-                        <div id="top-lule-right" class="side-top-panel side-lule"></div>
-                    </div>
-
-                    <div class="lista-presentes-hud" id="hud-presentes-lule"></div>
-                </div>
-
-                <div class="centro-arena">
-                    <div class="vs-divider">VS</div>
-                    <div class="center-top-panels">
-                        <div class="center-panel">
-                            <div class="center-panel-title">💰 TOP MOEDAS</div>
-                            <div id="top-moedas-center"></div>
-                        </div>
-                        <div class="center-panel">
-                            <div class="center-panel-title">❤️ TOP TAPS</div>
-                            <div id="top-taps-center"></div>
-                        </div>
+            <div class="lutador-box lutador-b">
+                <div class="hud-top">
+                    <div class="lutador-nome">🟢 Bozo</div>
+                    <div class="hp-bar-container">
+                        <div class="hp-bar-fill" id="hp-bozo-fill"></div>
+                        <div class="hp-texto" id="hp-bozo-text">1000 / 1000</div>
                     </div>
                 </div>
 
-                <div class="lutador-box lutador-b">
-                    <div class="hud-top">
-                        <div class="lutador-nome">🟢 Bozo</div>
-                        <div class="hp-bar-container">
-                            <div class="hp-bar-fill" id="hp-bozo-fill"></div>
-                            <div class="hp-texto" id="hp-bozo-text">1000 / 1000</div>
-                        </div>
+                <div class="avatar-with-ranks">
+                    <div id="top-bozo-left" class="side-top-panel side-bozo"></div>
+                    <div class="lutador-avatar-wrap" id="wrap-bozo">
+                        <img id="img-bozo" src="imagens/bozo_base.png" class="lutador-img">
                     </div>
-
-                    <div class="avatar-with-ranks">
-                        <div id="top-bozo-left" class="side-top-panel side-bozo"></div>
-                        <div class="lutador-avatar-wrap" id="wrap-bozo">
-                            <img id="img-bozo" src="imagens/bozo_base.png" class="lutador-img">
-                        </div>
-                        <div id="top-bozo-right" class="side-top-panel side-bozo"></div>
-                    </div>
-
-                    <div class="lista-presentes-hud" id="hud-presentes-bozo"></div>
+                    <div id="top-bozo-right" class="side-top-panel side-bozo"></div>
                 </div>
+
+                <div class="lista-presentes-hud" id="hud-presentes-bozo"></div>
             </div>
+        </div>
     </div>
-
-    <button onclick="document.getElementById('hud-janela-painel').style.display='flex'" style="position: absolute; top: 15px; left: 15px; z-index: 1500; background: #3498db; color: white; border: 2px solid #fff; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); opacity: 0.5; transition: opacity 0.2s;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">⚙️ PAINEL</button>
-
     <div id="hud-janela-painel" style="position: absolute; top: 60px; left: 15px; width: calc(100vw - 30px); max-width: 450px; height: 85vh; background: rgba(13, 17, 23, 0.95); border: 2px solid #3498db; border-radius: 10px; z-index: 2000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
         <div style="background: #3498db; padding: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
             <span>⚙️ Controle Host</span>
