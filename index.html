@@ -90,25 +90,141 @@
         .rank-score { font-size: 1.8rem; font-weight: 900; color: #f39c12; }
 
         /* --- ESTILOS DOS RANKINGS AO VIVO --- */
-        .side-top-panel { position: absolute; top: 50%; transform: translateY(-50%); width: 140px; display: flex; flex-direction: column; gap: 8px; z-index: 20; }
-        .left-panel { left: 10px; }
-        .right-panel { right: 10px; }
+        .avatar-with-ranks {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            width: 100%;
+        }
 
-        .top-item-side { display: flex; align-items: center; background: rgba(0,0,0,0.7); border-radius: 20px; padding: 5px; border: 1px solid rgba(255,255,255,0.2); }
-        .left-panel .top-item-side { border-color: #ff4757; box-shadow: 0 0 5px rgba(255,71,87,0.5); }
-        .right-panel .top-item-side { border-color: #2ed573; box-shadow: 0 0 5px rgba(46,213,115,0.5); }
-        .top-item-side img { width: 32px; height: 32px; border-radius: 50%; margin-right: 8px; border: 1px solid #fff; }
-        .top-item-side .info { display: flex; flex-direction: column; font-size: 0.75rem; overflow: hidden; }
-        .top-item-side .name { font-weight: bold; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #fff; }
-        .top-item-side .score { color: #f39c12; font-weight: 900; font-size: 0.7rem; }
+        .side-top-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 115px;
+            flex-shrink: 0;
+        }
 
-        .center-top-panels { position: absolute; top: 12%; left: 50%; transform: translateX(-50%); display: flex; gap: 30px; z-index: 20; }
-        .center-panel { background: rgba(0,0,0,0.8); border: 2px solid #f39c12; border-radius: 12px; padding: 8px; min-width: 130px; }
-        .center-panel-title { font-size: 0.75rem; color: #f39c12; font-weight: 900; text-align: center; margin-bottom: 8px; text-transform: uppercase; text-shadow: 0 0 5px black; }
-        .top-item-center { display: flex; align-items: center; gap: 6px; margin-bottom: 5px; font-size: 0.75rem; background: rgba(255,255,255,0.1); padding: 3px 6px; border-radius: 8px; }
-        .top-item-center img { width: 22px; height: 22px; border-radius: 50%; border: 1px solid #fff; }
-        .top-item-center .name { font-weight: bold; width: 50px; white-space: nowrap; overflow: hidden; text-transform: uppercase; color: #fff; }
-        .top-item-center .val { font-weight: 900; color: #2ed573; flex-grow: 1; text-align: right; }
+        .top-item-side {
+            display: flex;
+            align-items: center;
+            background: rgba(0, 0, 0, 0.85);
+            border-radius: 10px;
+            padding: 3px 5px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .side-lule .top-item-side { border-color: #ff4757; box-shadow: 0 0 5px rgba(255, 71, 87, 0.4); }
+        .side-bozo .top-item-side { border-color: #2ed573; box-shadow: 0 0 5px rgba(46, 213, 115, 0.4); }
+
+        .pos-num {
+            font-size: 0.65rem;
+            font-weight: 900;
+            color: #f39c12;
+            margin-right: 3px;
+            min-width: 16px;
+        }
+
+        .top-item-side img {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            margin-right: 5px;
+            border: 1px solid #fff;
+            object-fit: cover;
+        }
+
+        .top-item-side .info {
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .top-item-side .name {
+            font-weight: bold;
+            font-size: 0.65rem;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            color: #fff;
+        }
+
+        .top-item-side .score {
+            color: #f39c12;
+            font-weight: 900;
+            font-size: 0.6rem;
+        }
+
+        /* Centro da Arena (VS + Top Moedas e Top Taps abaixo da barra de HP) */
+        .centro-arena {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            margin-top: 50px; /* Alinha com as fotos sem cobrir a barra de sangue */
+        }
+
+        .center-top-panels {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .center-panel {
+            background: rgba(0, 0, 0, 0.85);
+            border: 2px solid #f39c12;
+            border-radius: 10px;
+            padding: 6px;
+            min-width: 110px;
+            box-shadow: 0 0 12px rgba(243, 156, 18, 0.3);
+        }
+
+        .center-panel-title {
+            font-size: 0.65rem;
+            color: #f39c12;
+            font-weight: 900;
+            text-align: center;
+            margin-bottom: 4px;
+            text-transform: uppercase;
+            text-shadow: 0 0 5px black;
+        }
+
+        .top-item-center {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            margin-bottom: 3px;
+            font-size: 0.65rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 2px 4px;
+            border-radius: 6px;
+        }
+
+        .top-item-center img {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            border: 1px solid #fff;
+            object-fit: cover;
+        }
+
+        .top-item-center .name {
+            font-weight: bold;
+            width: 40px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .top-item-center .val {
+            font-weight: 900;
+            color: #2ed573;
+            flex-grow: 1;
+            text-align: right;
+        }
 
         /* Estilos do Placar L vs B */
         .placar-confronto { display: flex; gap: 40px; justify-content: center; align-items: center; width: 100%; padding: 20px 0; }
@@ -418,8 +534,7 @@
                 <video id="video-player" style="width:100%; height:100%; object-fit:contain;"></video>
             </div>
 
-            <div id="top-lule-side" class="side-top-panel left-panel"></div>
-            <div id="top-bozo-side" class="side-top-panel right-panel"></div>
+
 
             <div class="center-top-panels">
                 <div class="center-panel">
@@ -441,13 +556,42 @@
                             <div class="hp-texto" id="hp-lule-text">1000 / 1000</div>
                         </div>
                     </div>
-                    <div class="lutador-avatar-wrap" id="wrap-lule">
-                        <img id="img-lule" src="imagens/lule_base.png" class="lutador-img">
+
+                    <div style="position: relative; display: inline-block;">
+                        <div class="arena-luta">
+                <div class="lutador-box lutador-l">
+                    <div class="hud-top">
+                        <div class="lutador-nome">🔴 Lule</div>
+                        <div class="hp-bar-container">
+                            <div class="hp-bar-fill" id="hp-lule-fill"></div>
+                            <div class="hp-texto" id="hp-lule-text">1000 / 1000</div>
+                        </div>
                     </div>
+
+                    <div class="avatar-with-ranks">
+                        <div id="top-lule-left" class="side-top-panel side-lule"></div>
+                        <div class="lutador-avatar-wrap" id="wrap-lule">
+                            <img id="img-lule" src="imagens/lule_base.png" class="lutador-img">
+                        </div>
+                        <div id="top-lule-right" class="side-top-panel side-lule"></div>
+                    </div>
+
                     <div class="lista-presentes-hud" id="hud-presentes-lule"></div>
                 </div>
 
-                <div class="vs-divider">VS</div>
+                <div class="centro-arena">
+                    <div class="vs-divider">VS</div>
+                    <div class="center-top-panels">
+                        <div class="center-panel">
+                            <div class="center-panel-title">💰 TOP MOEDAS</div>
+                            <div id="top-moedas-center"></div>
+                        </div>
+                        <div class="center-panel">
+                            <div class="center-panel-title">❤️ TOP TAPS</div>
+                            <div id="top-taps-center"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="lutador-box lutador-b">
                     <div class="hud-top">
@@ -457,9 +601,15 @@
                             <div class="hp-texto" id="hp-bozo-text">1000 / 1000</div>
                         </div>
                     </div>
-                    <div class="lutador-avatar-wrap" id="wrap-bozo">
-                        <img id="img-bozo" src="imagens/bozo_base.png" class="lutador-img">
+
+                    <div class="avatar-with-ranks">
+                        <div id="top-bozo-left" class="side-top-panel side-bozo"></div>
+                        <div class="lutador-avatar-wrap" id="wrap-bozo">
+                            <img id="img-bozo" src="imagens/bozo_base.png" class="lutador-img">
+                        </div>
+                        <div id="top-bozo-right" class="side-top-panel side-bozo"></div>
                     </div>
+
                     <div class="lista-presentes-hud" id="hud-presentes-bozo"></div>
                 </div>
             </div>
@@ -504,17 +654,24 @@
             // Calcula Pontuação (1 moeda = 1 pt | 1 tap = 0.01 pt)
             lista.forEach(p => p.pontos = p.moedas + (p.taps * 0.01));
 
-            // Filtros Laterais
-            let topLule = lista.filter(p => p.time === 'lule').sort((a,b) => b.pontos - a.pontos).slice(0,5);
-            let topBozo = lista.filter(p => p.time === 'bozo').sort((a,b) => b.pontos - a.pontos).slice(0,5);
+            // Filtro Lule (Top 10)
+            let top10Lule = lista.filter(p => p.time === 'lule').sort((a, b) => b.pontos - a.pontos).slice(0, 10);
+            let topLuleLeft = top10Lule.slice(0, 5);   // 1º ao 5º lugar
+            let topLuleRight = top10Lule.slice(5, 10); // 6º ao 10º lugar
 
-            // Filtros Centrais
-            let topMoedas = [...lista].sort((a,b) => b.moedas - a.moedas).slice(0,5);
-            let topTaps = [...lista].sort((a,b) => b.taps - a.taps).slice(0,5);
+            // Filtro Bozo (Top 10)
+            let top10Bozo = lista.filter(p => p.time === 'bozo').sort((a, b) => b.pontos - a.pontos).slice(0, 10);
+            let topBozoLeft = top10Bozo.slice(0, 5);   // 1º ao 5º lugar
+            let topBozoRight = top10Bozo.slice(5, 10); // 6º ao 10º lugar
 
-            // Gerador HTML Lateral
-            const htmlLateral = (arr) => arr.map(p => `
+            // Filtros Centrais (Top 5 Moedas e Top 5 Taps)
+            let topMoedas = [...lista].sort((a, b) => b.moedas - a.moedas).slice(0, 5);
+            let topTaps = [...lista].sort((a, b) => b.taps - a.taps).slice(0, 5);
+
+            // Gerador HTML Lateral com Posição Numérica (1º, 2º... ou 6º, 7º...)
+            const htmlLateral = (arr, posInicial) => arr.map((p, idx) => `
                 <div class="top-item-side">
+                    <span class="pos-num">${posInicial + idx}º</span>
                     <img src="${p.avatar}">
                     <div class="info">
                         <span class="name">${p.nick}</span>
@@ -523,7 +680,7 @@
                 </div>
             `).join('');
 
-            // Gerador HTML Central (Nome cortado em 5 chars)
+            // Gerador HTML Central (Nome cortado em 5 caracteres)
             const htmlCentral = (arr, tipo) => arr.filter(p => p[tipo] > 0).map(p => `
                 <div class="top-item-center">
                     <img src="${p.avatar}">
@@ -532,11 +689,17 @@
                 </div>
             `).join('');
 
-            // Atualiza as DIVs
-            let divL = document.getElementById('top-lule-side'); if(divL) divL.innerHTML = htmlLateral(topLule);
-            let divB = document.getElementById('top-bozo-side'); if(divB) divB.innerHTML = htmlLateral(topBozo);
-            let divM = document.getElementById('top-moedas-center'); if(divM) divM.innerHTML = htmlCentral(topMoedas, 'moedas');
-            let divT = document.getElementById('top-taps-center'); if(divT) divT.innerHTML = htmlCentral(topTaps, 'taps');
+            // Atualiza as DIVs nas laterais da foto do Lule
+            let divLL = document.getElementById('top-lule-left'); if (divLL) divLL.innerHTML = htmlLateral(topLuleLeft, 1);
+            let divLR = document.getElementById('top-lule-right'); if (divLR) divLR.innerHTML = htmlLateral(topLuleRight, 6);
+
+            // Atualiza as DIVs nas laterais da foto do Bozo
+            let divBL = document.getElementById('top-bozo-left'); if (divBL) divBL.innerHTML = htmlLateral(topBozoLeft, 1);
+            let divBR = document.getElementById('top-bozo-right'); if (divBR) divBR.innerHTML = htmlLateral(topBozoRight, 6);
+
+            // Atualiza as DIVs Centrais (Moedas e Taps)
+            let divM = document.getElementById('top-moedas-center'); if (divM) divM.innerHTML = htmlCentral(topMoedas, 'moedas');
+            let divT = document.getElementById('top-taps-center'); if (divT) divT.innerHTML = htmlCentral(topTaps, 'taps');
         }
 
 
