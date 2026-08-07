@@ -593,7 +593,7 @@
 
     <button onclick="document.getElementById('hud-janela-painel').style.display='flex'" style="position: absolute; top: 15px; left: 15px; z-index: 1500; background: #3498db; color: white; border: 2px solid #fff; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); opacity: 0.5; transition: opacity 0.2s;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">⚙️ PAINEL</button>
 
-    
+
     <div id="hud-janela-painel" style="position: absolute; top: 60px; left: 15px; width: calc(100vw - 30px); max-width: 450px; height: 85vh; background: rgba(13, 17, 23, 0.95); border: 2px solid #3498db; border-radius: 10px; z-index: 2000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
         <div style="background: #3498db; padding: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
             <span>⚙️ Controle Host</span>
@@ -1132,48 +1132,50 @@
 
             // 🎁 PROCESSA PRESENTES (GIFTS)
             if (evento === "gift") {
-                // 1. BLOQUEIO DE DUPLICAÇÃO DE COMBO
-                // Se a API avisar que o combo ainda não acabou, ignoramos!
-                if (dados.repeatEnd === false || dados.repeat_end === false) return;
-
-                // Bloqueio extra por ID na memória para evitar o "Eco" da API
-                let signId = dados.msgId || (nick + "_" + dados.giftId + "_" + dados.timestamp);
-                if (!window.presentesProcessados) window.presentesProcessados = new Set();
-                if (window.presentesProcessados.has(signId)) return;
-                window.presentesProcessados.add(signId);
-                setTimeout(() => window.presentesProcessados.delete(signId), 15000); // Limpa cache após 15s
-
-                // 2. FUNÇÃO PADRONIZADA DE LIMPEZA DE TEXTO (Remove espaços, acentos, maiúsculas)
+                // 1. Limpeza agressiva: arranca espaço, acento, maiúscula e caracteres ocultos
                 function limparStr(str) {
-                    return (str || "").toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+                    return (str || "").toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
                 }
 
                 let nomeGiftOriginal = dados.giftName || "";
                 let pres = limparStr(nomeGiftOriginal);
+                if (!pres) return; // Se a API não enviou nome, ignora
+
+                // 2. A TRAVA ANTI-ECO DO TIKTOK (Impede contar duas vezes)
+                if (dados.repeatEnd === false || dados.repeat_end === false) return;
+
+                let debounceId = nick + "_" + pres;
+                let agora = Date.now();
+                if (!window.ultimoGiftTime) window.ultimoGiftTime = {};
+                // Se a mesma pessoa mandou o mesmo presente há menos de 1.5s, é o eco do Combo! Ignora.
+                if (window.ultimoGiftTime[debounceId] && (agora - window.ultimoGiftTime[debounceId] < 1500)) {
+                    return;
+                }
+                window.ultimoGiftTime[debounceId] = agora;
 
                 let comboCount = parseInt(dados.repeatCount || dados.comboCount || dados.giftCount || dados.repeat_count || 1);
                 if (isNaN(comboCount) || comboCount < 1) comboCount = 1;
 
-                // Extrai o valor do presente em moedas/diamantes
+                // Computa as moedas para os Tops da tela
                 let coins = parseInt(dados.diamondCount || dados.coinCount || dados.diamonds || 0);
                 jogadoresAoVivo[nick].moedas += (coins * comboCount);
-                atualizarTopsNaTela(); // Atualiza painéis
+                atualizarTopsNaTela();
 
                 let giftImg = dados.giftPictureUrl || dados.giftImage || dados.giftIcon || dados.iconUrl || "";
                 if (giftImg) salvarIconePresente(nomeGiftOriginal, giftImg);
 
-                // Mapeamento Lule (AGORA AS CONFIGURAÇÕES TAMBÉM SÃO LIMPAS!)
+                // Mapeamento Lule (Limpando as configs do painel também e protegendo contra campos vazios)
                 let l_atk1 = limparStr(cfg.pres_atk1_l || "rosa"); let l_atk2 = limparStr(cfg.pres_atk2_l || "sorvete");
                 let l_atk3 = limparStr(cfg.pres_atk3_l || "peso"); let l_atk4 = limparStr(cfg.pres_atk4_l || "tiktok");
                 let l_max  = limparStr(cfg.pres_max_l  || "coracao"); let l_cura = limparStr(cfg.pres_cura_l || "panda");
 
                 let atacouL = false, videoL = null, danoBaseL = 0;
-                if (pres.includes(l_atk1)) { atacouL = true; danoBaseL = 1; }
-                else if (pres.includes(l_atk2)) { atacouL = true; danoBaseL = 10; videoL = 'videos/ataque_L.mp4'; }
-                else if (pres.includes(l_atk3)) { atacouL = true; danoBaseL = 50; videoL = 'videos/ataque_51_L.mp4'; }
-                else if (pres.includes(l_atk4)) { atacouL = true; danoBaseL = 80; videoL = 'videos/ataque_roubou_L.mp4'; }
-                else if (pres.includes(l_max))  { atacouL = true; danoBaseL = 300; videoL = 'videos/maximo_L.mp4'; }
-                else if (pres.includes(l_cura)) {
+                if (l_atk1 !== "" && pres.includes(l_atk1)) { atacouL = true; danoBaseL = 1; }
+                else if (l_atk2 !== "" && pres.includes(l_atk2)) { atacouL = true; danoBaseL = 10; videoL = 'videos/ataque_L.mp4'; }
+                else if (l_atk3 !== "" && pres.includes(l_atk3)) { atacouL = true; danoBaseL = 50; videoL = 'videos/ataque_51_L.mp4'; }
+                else if (l_atk4 !== "" && pres.includes(l_atk4)) { atacouL = true; danoBaseL = 80; videoL = 'videos/ataque_roubou_L.mp4'; }
+                else if (l_max !== "" && pres.includes(l_max))  { atacouL = true; danoBaseL = 300; videoL = 'videos/maximo_L.mp4'; }
+                else if (l_cura !== "" && pres.includes(l_cura)) {
                     estadoLuta.ajudante_lule = { nick, avatar: avatar_url };
                     aplicarCura('lule', 30 * comboCount);
                 }
@@ -1191,18 +1193,18 @@
                     return;
                 }
 
-                // Mapeamento Bozo (AGORA AS CONFIGURAÇÕES TAMBÉM SÃO LIMPAS!)
+                // Mapeamento Bozo (Limpando as configs do painel também e protegendo contra campos vazios)
                 let b_atk1 = limparStr(cfg.pres_atk1_b || "rosa"); let b_atk2 = limparStr(cfg.pres_atk2_b || "sorvete");
                 let b_atk3 = limparStr(cfg.pres_atk3_b || "peso"); let b_atk4 = limparStr(cfg.pres_atk4_b || "tiktok");
                 let b_max  = limparStr(cfg.pres_max_b  || "coracao"); let b_cura = limparStr(cfg.pres_cura_b || "panda");
 
                 let atacouB = false, videoB = null, danoBaseB = 0;
-                if (pres.includes(b_atk1)) { atacouB = true; danoBaseB = 1; }
-                else if (pres.includes(b_atk2)) { atacouB = true; danoBaseB = 10; videoB = 'videos/motociataB.mp4'; }
-                else if (pres.includes(b_atk3)) { atacouB = true; danoBaseB = 50; videoB = 'videos/Coronga_B.mp4'; }
-                else if (pres.includes(b_atk4)) { atacouB = true; danoBaseB = 80; videoB = 'videos/7desetembro_B.mp4'; }
-                else if (pres.includes(b_max))  { atacouB = true; danoBaseB = 300; videoB = 'videos/maximo_B.mp4'; }
-                else if (pres.includes(b_cura)) {
+                if (b_atk1 !== "" && pres.includes(b_atk1)) { atacouB = true; danoBaseB = 1; }
+                else if (b_atk2 !== "" && pres.includes(b_atk2)) { atacouB = true; danoBaseB = 10; videoB = 'videos/motociataB.mp4'; }
+                else if (b_atk3 !== "" && pres.includes(b_atk3)) { atacouB = true; danoBaseB = 50; videoB = 'videos/Coronga_B.mp4'; }
+                else if (b_atk4 !== "" && pres.includes(b_atk4)) { atacouB = true; danoBaseB = 80; videoB = 'videos/7desetembro_B.mp4'; }
+                else if (b_max !== "" && pres.includes(b_max))  { atacouB = true; danoBaseB = 300; videoB = 'videos/maximo_B.mp4'; }
+                else if (b_cura !== "" && pres.includes(b_cura)) {
                     estadoLuta.ajudante_bozo = { nick, avatar: avatar_url };
                     aplicarCura('bozo', 30 * comboCount);
                 }
