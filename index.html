@@ -49,15 +49,21 @@
         .avatar-boom-center { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.1); font-size: 180px; z-index: 999; pointer-events: none; animation: centerBoom 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; filter: drop-shadow(0 0 30px rgba(255, 69, 0, 1)); }
         @keyframes centerBoom { 0% { transform: translate(-50%, -50%) scale(0.1) rotate(-20deg); opacity: 1; } 50% { transform: translate(-50%, -50%) scale(2.5) rotate(10deg); opacity: 1; } 100% { transform: translate(-50%, -50%) scale(3.5) rotate(20deg); opacity: 0; } }
 
-        .tela-vencedor { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.85); backdrop-filter: blur(10px); z-index: 900; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
+        .tela-vencedor { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.9); backdrop-filter: blur(15px); z-index: 900; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; pointer-events: none; transition: opacity 0.5s ease; }
         .tela-vencedor.show { opacity: 1; pointer-events: auto; }
-        .titulo-vencedor { font-size: 5rem; color: gold; font-weight: 900; margin-bottom: 20px; text-shadow: 0 0 20px gold, 0 0 40px darkgoldenrod; text-transform: uppercase; animation: bounce 1s infinite alternate; }
-        .vencedor-avatar { width: 180px; height: 180px; border-radius: 50%; border: 8px solid gold; box-shadow: 0 0 30px gold; object-fit: cover; margin-bottom: 15px; }
-        .vencedor-nick { font-size: 2.5rem; font-weight: bold; background: #111; padding: 10px 30px; border-radius: 20px; border: 2px solid gold; margin-bottom: 30px; }
-        .vencedor-stats { display: flex; gap: 40px; text-align: center; }
-        .stat-box { background: rgba(255,255,255,0.1); padding: 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2); min-width: 200px; max-width: 400px; }
-        .stat-box h3 { margin: 0 0 10px 0; color: #2ed573; font-size: 1.5rem; }
-        .stat-box p { margin: 0; font-size: 1.2rem; font-weight: bold; word-wrap: break-word; }
+        .titulo-vencedor { font-size: 6rem; color: gold; font-weight: 900; margin-bottom: 10px; text-shadow: 0 0 30px gold, 0 0 60px darkgoldenrod; text-transform: uppercase; animation: bounce 1s infinite alternate; text-align: center;}
+
+        .card-resultado { display: flex; flex-direction: column; align-items: center; }
+        .card-resultado img { width: 300px; height: 300px; border-radius: 50%; object-fit: cover; background: #111; }
+
+        /* Destaque para o Vencedor */
+        .vencedor-card img { border: 10px solid #2ed573; box-shadow: 0 0 60px rgba(46, 213, 115, 0.8); transform: scale(1.1); animation: floatWinner 3s infinite ease-in-out; }
+
+        /* Humilhação para o Perdedor */
+        .perdedor-card img { border: 8px solid #ff4757; box-shadow: 0 0 30px rgba(255, 71, 87, 0.5); filter: grayscale(80%) brightness(0.6) sepia(0.5) hue-rotate(-50deg); transform: scale(0.85); }
+
+        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
+        @keyframes floatWinner { 0%, 100% { transform: scale(1.1) translateY(0); } 50% { transform: scale(1.1) translateY(-15px); } }
         @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-10px); } }
 
         .aviso-popup { position: absolute; top: 75%; left: 50%; transform: translate(-50%, -50%); background: rgba(255, 71, 87, 0.95); color: white; padding: 15px 40px; border-radius: 12px; font-size: 2rem; font-weight: 900; letter-spacing: 2px; z-index: 200; opacity: 0; pointer-events: none; transition: opacity 0.2s; border: 3px solid white; box-shadow: 0 10px 25px rgba(0,0,0,0.5); text-transform: uppercase; }
@@ -357,19 +363,27 @@
     <div class="aviso-popup" id="aviso-popup">JÁ USADA!</div>
 
     <div class="tela-vencedor" id="tela-vencedor">
-        <div class="titulo-vencedor">🏆 CAMPEÃO! 🏆</div>
-        <img id="vencedor-avatar" class="vencedor-avatar" src="">
-        <div class="vencedor-nick" id="vencedor-nick">...</div>
-        <div class="vencedor-stats">
-            <div class="stat-box">
-                <h3 style="color: #f39c12;">⏱️ Tempo Sobrevivido</h3>
-                <p id="vencedor-tempo">0s</p>
+        <div class="titulo-vencedor">🏆 <span id="nome-ganhador-titulo">CAMPEÃO</span> VENCEU! 🏆</div>
+
+        <div style="font-size: 1.5rem; color: #fff; margin-bottom: 30px; background: rgba(0,0,0,0.8); padding: 10px 30px; border-radius: 15px; border: 2px solid #f39c12; box-shadow: 0 0 20px rgba(243,156,18,0.5);">
+            GOLPE FINAL POR: <span id="vencedor-nick" style="color: gold; font-weight: bold; font-size: 2rem; margin-left: 10px;">...</span>
+        </div>
+
+        <div style="display: flex; gap: 50px; align-items: center; justify-content: center; width: 100%;">
+            <div class="card-resultado vencedor-card">
+                <h2 style="color: #2ed573; text-shadow: 0 0 15px #2ed573; font-size: 2.5rem; margin-bottom: 10px; margin-top: 0;">VENCEDOR</h2>
+                <img id="img-vencedor-final" src="">
             </div>
-            <div class="stat-box">
-                <h3>🧠 Palavras Acertadas</h3>
-                <p id="vencedor-palavras" style="font-size: 1rem; color: #ccc;">Nenhuma</p>
+
+            <div style="font-size: 5rem; font-weight: 900; color: #f39c12; text-shadow: 0 0 20px #f39c12;">X</div>
+
+            <div class="card-resultado perdedor-card">
+                <h2 style="color: #ff4757; text-shadow: 0 0 15px #ff4757; font-size: 2rem; margin-bottom: 10px; margin-top: 0;">DERROTADO</h2>
+                <img id="img-perdedor-final" src="">
             </div>
         </div>
+
+        <div style="margin-top: 50px; color: #ccc; font-size: 1.8rem; animation: pulseCount 1s infinite alternate; font-weight: bold;">Próxima luta em 5 segundos...</div>
     </div>
 
     <div id="ranking-view">
@@ -716,23 +730,53 @@
             setTimeout(() => boom.remove(), 800);
         }
 
+        function verificarFimDeLuta() {
+            if (estadoLuta.hp_lule <= 0 || estadoLuta.hp_bozo <= 0) {
+                let ladoVencedor = estadoLuta.hp_lule > 0 ? 'lule' : 'bozo';
+                let ladoPerdedor = estadoLuta.hp_lule > 0 ? 'bozo' : 'lule';
+                let ajudante = ladoVencedor === 'lule' ? estadoLuta.ajudante_lule : estadoLuta.ajudante_bozo;
+
+                let nomeVenc = ladoVencedor === 'lule' ? 'LULE' : 'BOZO';
+                let imgVenc = `imagens/${ladoVencedor}_base.png`;
+                let imgPerd = `imagens/${ladoPerdedor}_dano_grave.png`; // A imagem destruída do perdedor
+
+                // Atualiza o ranking com o lado vitorioso e o jogador que finalizou
+                addRanking(ladoVencedor, ajudante.nick, ajudante.avatar);
+
+                exibirVencedor({
+                    nick: ajudante.nick,
+                    nome_vencedor: nomeVenc,
+                    img_vencedor: imgVenc,
+                    img_perdedor: imgPerd
+                });
+
+                // Reinicia a luta após 5 MINUTOS (300.000 milissegundos)
+                setTimeout(() => {
+                    estadoLuta.hp_lule = 1000;
+                    estadoLuta.hp_bozo = 1000;
+                    atualizarHUDLuta();
+                }, 5000);
+            }
+        }
+
         function exibirVencedor(dados) {
             playVictory();
             document.getElementById('ranking-view').style.display = 'none';
             document.getElementById('game-zoom-area').style.display = 'block';
 
-            document.getElementById('vencedor-avatar').src = dados.avatar;
+            // Alimenta a nova tela cara-a-cara
+            document.getElementById('nome-ganhador-titulo').innerText = dados.nome_vencedor;
             document.getElementById('vencedor-nick').innerText = dados.nick;
-
-            // Esconde os status que não usamos mais neste jogo
-            document.querySelector('.vencedor-stats').style.display = 'none';
+            document.getElementById('img-vencedor-final').src = dados.img_vencedor;
+            document.getElementById('img-perdedor-final').src = dados.img_perdedor;
 
             const tela = document.getElementById('tela-vencedor');
             tela.classList.add('show');
 
+            // Remove a tela da frente após 5 MINUTOS (300.000 milissegundos)
             setTimeout(() => {
                 tela.classList.remove('show');
-            }, 8000);
+            }, 5000);
         }
 
         function renderizarRankingUI(modo, dataDict, periodoTexto) {
@@ -924,28 +968,23 @@
             }
         }
 
-        function verificarFimDeLuta() {
-            if (estadoLuta.hp_lule <= 0 || estadoLuta.hp_bozo <= 0) {
-                let ladoVencedor = estadoLuta.hp_lule > 0 ? 'lule' : 'bozo';
-                let ajudante = ladoVencedor === 'lule' ? estadoLuta.ajudante_lule : estadoLuta.ajudante_bozo;
+        function exibirVencedor(dados) {
+            playVictory();
+            document.getElementById('ranking-view').style.display = 'none';
+            document.getElementById('game-zoom-area').style.display = 'block';
 
-                // Atualiza o ranking com o lado vitorioso e o jogador que finalizou
-                addRanking(ladoVencedor, ajudante.nick, ajudante.avatar);
+            document.getElementById('vencedor-avatar').src = dados.avatar;
+            document.getElementById('vencedor-nick').innerText = dados.nick;
 
-                exibirVencedor({
-                    nick: `GOLPE FINAL: ${ajudante.nick}`,
-                    avatar: ajudante.avatar,
-                    tempo: 0,
-                    palavras: []
-                });
+            // Esconde os status que não usamos mais neste jogo
+            document.querySelector('.vencedor-stats').style.display = 'none';
 
-                // Reinicia a luta após 8 segundos
-                setTimeout(() => {
-                    estadoLuta.hp_lule = 1000;
-                    estadoLuta.hp_bozo = 1000;
-                    atualizarHUDLuta();
-                }, 8000);
-            }
+            const tela = document.getElementById('tela-vencedor');
+            tela.classList.add('show');
+
+            setTimeout(() => {
+                tela.classList.remove('show');
+            }, 8000);
         }
 
         // Toca provocações em áudio aleatórias a cada 15 segundos se não estiver em vídeo
