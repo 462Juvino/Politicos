@@ -101,8 +101,8 @@
         .side-top-panel {
             display: flex;
             flex-direction: column;
-            gap: 4px;
-            width: 115px;
+            gap: 6px; /* Espaço maior entre os jogadores */
+            width: 155px; /* LARGURA BEM MAIOR */
             flex-shrink: 0;
         }
 
@@ -110,8 +110,8 @@
             display: flex;
             align-items: center;
             background: rgba(0, 0, 0, 0.85);
-            border-radius: 10px;
-            padding: 3px 5px;
+            border-radius: 12px;
+            padding: 5px 8px; /* Caixa mais gordinha */
             border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
@@ -119,18 +119,18 @@
         .side-bozo .top-item-side { border-color: #2ed573; box-shadow: 0 0 5px rgba(46, 213, 115, 0.4); }
 
         .pos-num {
-            font-size: 0.65rem;
+            font-size: 0.85rem; /* NUMERAÇÃO MAIOR */
             font-weight: 900;
             color: #f39c12;
-            margin-right: 3px;
-            min-width: 16px;
+            margin-right: 5px;
+            min-width: 20px;
         }
 
         .top-item-side img {
-            width: 26px;
-            height: 26px;
+            width: 36px; /* FOTO BEM MAIOR */
+            height: 36px;
             border-radius: 50%;
-            margin-right: 5px;
+            margin-right: 8px;
             border: 1px solid #fff;
             object-fit: cover;
         }
@@ -143,7 +143,7 @@
 
         .top-item-side .name {
             font-weight: bold;
-            font-size: 0.65rem;
+            font-size: 0.85rem; /* NOME MAIOR */
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
@@ -153,40 +153,40 @@
         .top-item-side .score {
             color: #f39c12;
             font-weight: 900;
-            font-size: 0.6rem;
+            font-size: 0.75rem; /* PONTUAÇÃO MAIOR */
         }
 
-        /* Centro da Arena (VS + Top Moedas e Top Taps abaixo da barra de HP) */
+        /* Centro da Arena (VS + Top Moedas e Top Taps) */
         .centro-arena {
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: flex-start;
-            margin-top: 50px; /* Alinha com as fotos sem cobrir a barra de sangue */
+            margin-top: 85px; /* Mantém o VS colado no topo */
         }
 
         .center-top-panels {
             display: flex;
             flex-direction: column;
-            gap: 8px;
-            margin-top: 10px;
+            gap: 15px; /* Espaço maior entre Top Moeda e Top Taps */
+            margin-top: 330px; /* EMPURRA PARA BAIXO ENTRE OS PRESENTES! */
         }
 
         .center-panel {
             background: rgba(0, 0, 0, 0.85);
             border: 2px solid #f39c12;
-            border-radius: 10px;
-            padding: 6px;
-            min-width: 110px;
-            box-shadow: 0 0 12px rgba(243, 156, 18, 0.3);
+            border-radius: 12px;
+            padding: 10px 12px; /* Caixa mais gordinha */
+            min-width: 170px; /* BEM MAIS LARGO */
+            box-shadow: 0 0 15px rgba(243, 156, 18, 0.4);
         }
 
         .center-panel-title {
-            font-size: 0.65rem;
+            font-size: 0.95rem; /* TÍTULO MAIOR */
             color: #f39c12;
             font-weight: 900;
             text-align: center;
-            margin-bottom: 4px;
+            margin-bottom: 8px;
             text-transform: uppercase;
             text-shadow: 0 0 5px black;
         }
@@ -194,17 +194,17 @@
         .top-item-center {
             display: flex;
             align-items: center;
-            gap: 5px;
-            margin-bottom: 3px;
-            font-size: 0.65rem;
+            gap: 8px;
+            margin-bottom: 5px;
+            font-size: 0.9rem; /* FONTE MAIOR */
             background: rgba(255, 255, 255, 0.1);
-            padding: 2px 4px;
-            border-radius: 6px;
+            padding: 5px 8px;
+            border-radius: 8px;
         }
 
         .top-item-center img {
-            width: 18px;
-            height: 18px;
+            width: 26px; /* FOTO MAIOR */
+            height: 26px;
             border-radius: 50%;
             border: 1px solid #fff;
             object-fit: cover;
@@ -212,7 +212,7 @@
 
         .top-item-center .name {
             font-weight: bold;
-            width: 40px;
+            width: 60px; /* LARGURA MAIOR PARA O NOME */
             white-space: nowrap;
             overflow: hidden;
             text-transform: uppercase;
@@ -224,6 +224,7 @@
             color: #2ed573;
             flex-grow: 1;
             text-align: right;
+            font-size: 0.95rem; /* NÚMERO DE MOEDAS/TAPS MAIOR */
         }
 
         /* Estilos do Placar L vs B */
@@ -243,9 +244,9 @@
         /* Arena de Luta Posicionada Mais Acima */
         .arena-luta {
             position: absolute;
-            top: 38%; /* SUBIU BASTANTE A ARENA */
+            top: 15%; /* SUBIU PARA FICAR BEM PERTO DO TOPO */
             left: 50%;
-            transform: translate(-50%, -38%);
+            transform: translate(-50%, -15%);
             width: 95vw;
             max-width: 1300px;
             display: flex;
@@ -302,22 +303,25 @@
         /* Container de Presentes e Funções abaixo das fotos */
         .lista-presentes-hud {
             margin-top: 15px;
-            display: grid;
-            grid-template-columns: max-content max-content; /* Colunas moldadas pelo maior nome */
-            justify-content: center; /* Centraliza a grade inteira debaixo do lutador */
-            gap: 12px; /* Distanciamento claro entre as caixas */
+            display: flex;
+            flex-direction: column; /* UMA ÚNICA COLUNA EMPILHADA */
+            align-items: stretch; /* Estica as caixas para ficarem com largura igual */
+            width: 100%;
+            max-width: 320px; /* Largura máxima para não ficar gigante demais na tela PC */
+            margin-left: auto;
+            margin-right: auto;
+            gap: 12px;
         }
 
         .card-presente-hud {
             background: rgba(0, 0, 0, 0.75);
             border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 8px;
-            padding: 10px 15px; /* Mais espaço interno para as laterais não ficarem espremidas */
+            border-radius: 12px; /* Bordas mais arredondadas */
+            padding: 12px 20px; /* Caixas mais gordinhas e espaçosas */
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 15px; /* Distância maior entre a foto do presente e o texto */
             backdrop-filter: blur(4px);
-            /* Ciclo de 14s com 10s cravados de visibilidade total */
             animation: antiStaticFade 14s infinite ease-in-out;
         }
 
@@ -331,10 +335,10 @@
             100% { opacity: 0; transform: translateY(-10px); pointer-events: none; }
         }
         .img-presente-hud {
-            width: 28px;
-            height: 28px;
+            width: 48px; /* ÍCONE QUASE O DOBRO DO TAMANHO */
+            height: 48px;
             object-fit: contain;
-            border-radius: 4px;
+            border-radius: 6px;
             background: rgba(255,255,255,0.1);
             flex-shrink: 0;
         }
@@ -346,8 +350,8 @@
         }
 
         .nome-presente-hud {
-            font-size: 0.75rem;
-            font-weight: bold;
+            font-size: 1.15rem; /* TEXTO MUITO MAIOR */
+            font-weight: 900;
             color: #fff;
             white-space: nowrap;
             overflow: hidden;
@@ -355,8 +359,8 @@
         }
 
         .funcao-presente-hud {
-            font-size: 0.65rem;
-            font-weight: 800;
+            font-size: 0.85rem; /* FUNÇÃO DO PRESENTE MUITO MAIOR */
+            font-weight: 900;
             color: #f39c12;
             text-transform: uppercase;
         }
