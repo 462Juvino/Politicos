@@ -590,6 +590,10 @@
             </div>
         </div>
     </div>
+
+    <button onclick="document.getElementById('hud-janela-painel').style.display='flex'" style="position: absolute; top: 15px; left: 15px; z-index: 1500; background: #3498db; color: white; border: 2px solid #fff; padding: 10px 15px; font-weight: bold; border-radius: 5px; cursor: pointer; box-shadow: 0 0 10px rgba(52, 152, 219, 0.8); opacity: 0.5; transition: opacity 0.2s;" onmouseenter="this.style.opacity=1" onmouseleave="this.style.opacity=0.5">⚙️ PAINEL</button>
+
+    
     <div id="hud-janela-painel" style="position: absolute; top: 60px; left: 15px; width: calc(100vw - 30px); max-width: 450px; height: 85vh; background: rgba(13, 17, 23, 0.95); border: 2px solid #3498db; border-radius: 10px; z-index: 2000; display: none; flex-direction: column; overflow: hidden; box-shadow: 0 0 20px rgba(0,0,0,0.8);">
         <div style="background: #3498db; padding: 10px; font-weight: bold; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 5px;">
             <span>⚙️ Controle Host</span>
@@ -1128,8 +1132,24 @@
 
             // 🎁 PROCESSA PRESENTES (GIFTS)
             if (evento === "gift") {
+                // 1. BLOQUEIO DE DUPLICAÇÃO DE COMBO
+                // Se a API avisar que o combo ainda não acabou, ignoramos!
+                if (dados.repeatEnd === false || dados.repeat_end === false) return;
+
+                // Bloqueio extra por ID na memória para evitar o "Eco" da API
+                let signId = dados.msgId || (nick + "_" + dados.giftId + "_" + dados.timestamp);
+                if (!window.presentesProcessados) window.presentesProcessados = new Set();
+                if (window.presentesProcessados.has(signId)) return;
+                window.presentesProcessados.add(signId);
+                setTimeout(() => window.presentesProcessados.delete(signId), 15000); // Limpa cache após 15s
+
+                // 2. FUNÇÃO PADRONIZADA DE LIMPEZA DE TEXTO (Remove espaços, acentos, maiúsculas)
+                function limparStr(str) {
+                    return (str || "").toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+                }
+
                 let nomeGiftOriginal = dados.giftName || "";
-                let pres = nomeGiftOriginal.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, "").replace(/[^a-z0-9]/g, "");
+                let pres = limparStr(nomeGiftOriginal);
 
                 let comboCount = parseInt(dados.repeatCount || dados.comboCount || dados.giftCount || dados.repeat_count || 1);
                 if (isNaN(comboCount) || comboCount < 1) comboCount = 1;
@@ -1142,11 +1162,10 @@
                 let giftImg = dados.giftPictureUrl || dados.giftImage || dados.giftIcon || dados.iconUrl || "";
                 if (giftImg) salvarIconePresente(nomeGiftOriginal, giftImg);
 
-
-                // Mapeamento Lule
-                let l_atk1 = (cfg.pres_atk1_l || "rosa").toLowerCase(); let l_atk2 = (cfg.pres_atk2_l || "sorvete").toLowerCase();
-                let l_atk3 = (cfg.pres_atk3_l || "peso").toLowerCase(); let l_atk4 = (cfg.pres_atk4_l || "tiktok").toLowerCase();
-                let l_max  = (cfg.pres_max_l  || "coracao").toLowerCase(); let l_cura = (cfg.pres_cura_l || "panda").toLowerCase();
+                // Mapeamento Lule (AGORA AS CONFIGURAÇÕES TAMBÉM SÃO LIMPAS!)
+                let l_atk1 = limparStr(cfg.pres_atk1_l || "rosa"); let l_atk2 = limparStr(cfg.pres_atk2_l || "sorvete");
+                let l_atk3 = limparStr(cfg.pres_atk3_l || "peso"); let l_atk4 = limparStr(cfg.pres_atk4_l || "tiktok");
+                let l_max  = limparStr(cfg.pres_max_l  || "coracao"); let l_cura = limparStr(cfg.pres_cura_l || "panda");
 
                 let atacouL = false, videoL = null, danoBaseL = 0;
                 if (pres.includes(l_atk1)) { atacouL = true; danoBaseL = 1; }
@@ -1164,21 +1183,18 @@
                     let danoTotalL = danoBaseL * comboCount;
 
                     if (videoL) {
-                        if (estadoLuta.emVideo) {
-                            aplicarDano('bozo', danoTotalL);
-                        } else {
-                            tocarVideoAtaque(videoL, danoTotalL, 'bozo');
-                        }
+                        if (estadoLuta.emVideo) { aplicarDano('bozo', danoTotalL); }
+                        else { tocarVideoAtaque(videoL, danoTotalL, 'bozo'); }
                     } else {
                         aplicarDano('bozo', danoTotalL);
                     }
                     return;
                 }
 
-                // Mapeamento Bozo
-                let b_atk1 = (cfg.pres_atk1_b || "rosa").toLowerCase(); let b_atk2 = (cfg.pres_atk2_b || "sorvete").toLowerCase();
-                let b_atk3 = (cfg.pres_atk3_b || "peso").toLowerCase(); let b_atk4 = (cfg.pres_atk4_b || "tiktok").toLowerCase();
-                let b_max  = (cfg.pres_max_b  || "coracao").toLowerCase(); let b_cura = (cfg.pres_cura_b || "panda").toLowerCase();
+                // Mapeamento Bozo (AGORA AS CONFIGURAÇÕES TAMBÉM SÃO LIMPAS!)
+                let b_atk1 = limparStr(cfg.pres_atk1_b || "rosa"); let b_atk2 = limparStr(cfg.pres_atk2_b || "sorvete");
+                let b_atk3 = limparStr(cfg.pres_atk3_b || "peso"); let b_atk4 = limparStr(cfg.pres_atk4_b || "tiktok");
+                let b_max  = limparStr(cfg.pres_max_b  || "coracao"); let b_cura = limparStr(cfg.pres_cura_b || "panda");
 
                 let atacouB = false, videoB = null, danoBaseB = 0;
                 if (pres.includes(b_atk1)) { atacouB = true; danoBaseB = 1; }
@@ -1196,11 +1212,8 @@
                     let danoTotalB = danoBaseB * comboCount;
 
                     if (videoB) {
-                        if (estadoLuta.emVideo) {
-                            aplicarDano('lule', danoTotalB);
-                        } else {
-                            tocarVideoAtaque(videoB, danoTotalB, 'lule');
-                        }
+                        if (estadoLuta.emVideo) { aplicarDano('lule', danoTotalB); }
+                        else { tocarVideoAtaque(videoB, danoTotalB, 'lule'); }
                     } else {
                         aplicarDano('lule', danoTotalB);
                     }
